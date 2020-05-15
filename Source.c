@@ -153,3 +153,17 @@ int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro)
         break;
     }
 }
+
+void imprimir_instrucoes(){
+        printf("\n------------------------------------------\n");
+        printf("TIPOS DE EMBARCACOES:\n");
+        printf("                     1-PORTA AVIOES.\n");
+        printf("                     2-COURACADO.\n");
+        printf("                     3-TORPEDEIRO.\n");
+        printf("                     4-HIDRO AVIAO.\n");
+        printf("DIRECAO:.\n");
+        printf("                     d-direita.\n");
+        printf("                     b-baixo.\n");
+        printf("------------------------------------------\n");
+       
+}

@@ -23,16 +23,7 @@ int main()
 
     while (nport < maxport || ncour < maxcour || ntorp < maxtorp || nhidro < maxhidro)
     { //aloca todas as embarcações
-        printf("\n------------------------------------------\n");
-        printf("TIPOS DE EMBARCACOES:\n");
-        printf("                     1-PORTA AVIOES.\n");
-        printf("                     2-COURACADO.\n");
-        printf("                     3-TORPEDEIRO.\n");
-        printf("                     4-HIDRO AVIAO.\n");
-        printf("DIRECAO:.\n");
-        printf("                     d-direita.\n");
-        printf("                     b-baixo.\n");
-        printf("------------------------------------------\n");
+        void imprimir_instrucoes();
         printf("Tipo de embarcacao:");
         scanf("%i", &tipo);
         printf("cordenadas de origem:");

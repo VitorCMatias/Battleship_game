@@ -23,3 +23,4 @@ void inicializa_player(char *ponteiro);
 int aloca_barco(barco embarcacao,char direc,int l, int c,char *ponteiro);
 void gotoxy(short x, short y);
 void print_map();
+void imprimir_instrucoes();
