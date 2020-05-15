@@ -42,7 +42,7 @@ void imprime_tela(char player[DIM][DIM][2])
 
     int i, j, k, aux;
 
-    aux = 65; //A em ascii
+    aux = 'A';
     printf("    ");
     for (i = 0; i < DIM; i++)
     {
@@ -154,18 +154,63 @@ int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro)
     }
 }
 
+void imprimir_instrucoes(int nport, int ncour, int ntorp, int nhidro)
+{
+    printf("\n----------------------------------------------------------\n");
+    printf("TIPOS DE EMBARCACOES:\n");
+    printf("\t\t 1-PORTA AVIOES\t\t RESTANTES: %i\n", maxport - nport);
+    printf("\t\t 2-COURACADO \t\t RESTANTES: %i\n", maxcour - ncour);
+    printf("\t\t 3-TORPEDEIRO \t\t RESTANTES: %i\n", maxtorp - ntorp);
+    printf("\t\t 4-HIDRO AVIAO \t\t RESTANTES: %i\n", maxhidro - nhidro);
+    printf("DIRECAO:\n");
+    printf("\t\t d-direita.\n");
+    printf("\t\t b-baixo.\n");
+    printf("------------------------------------------------------------\n");
+}
 
+int setar_tipo_embarcacao()
+{
+    int tipo_embarcacao;
+    printf("Tipo de embarcacao: ");
+    scanf("%d", &tipo_embarcacao);
 
-void imprimir_instrucoes(){
-        printf("\n------------------------------------------\n");
-        printf("TIPOS DE EMBARCACOES:\n");
-        printf("                     1-PORTA AVIOES.\n");
-        printf("                     2-COURACADO.\n");
-        printf("                     3-TORPEDEIRO.\n");
-        printf("                     4-HIDRO AVIAO.\n");
-        printf("DIRECAO:.\n");
-        printf("                     d-direita.\n");
-        printf("                     b-baixo.\n");
-        printf("------------------------------------------\n");
-       
+    return tipo_embarcacao;
+}
+char setar_direcao_embarcacao()
+{
+    char direcao_embarcacao;
+
+    printf("direcao: ");
+    
+    scanf(" %[^\n]c ", &direcao_embarcacao); //direção que será colocado a embarcação
+
+    return direcao_embarcacao;
+}
+void setar_coordenadas_de_entrada(int *coord1, int *coord2)
+{
+    char coordenada_x;
+    int coordenada_y;
+    bool coordenada_invalida = true;
+    while (coordenada_invalida)
+    {
+        printf("cordenadas de origem: ");
+        scanf(" %c %i", &coordenada_x, &coordenada_y); //coordenadas do pivo da embarcação
+        coordenada_x = toupper(coordenada_x);
+        if (coordenada_x < 'A' || coordenada_x > 'P')
+        {
+            puts("ERRO! Valor da coordenada coluna esta fora do intervalo de A a P \n");
+            coordenada_invalida = true;
+        }
+        else if (coordenada_y < 0 || coordenada_y > N_LINHAS)
+        {
+            puts("ERRO! Valor da coordenada linha esta fora do intervalo de 0 a 13 \n");
+            coordenada_invalida = true;
+        }
+        else
+        {
+            *coord1 = coordenada_x - 'A';
+            *coord2 = coordenada_y;
+            coordenada_invalida = false;
+        }
+    }
 }
