@@ -84,7 +84,7 @@ void inicializa_player(char *ponteiro)
     }
 }
 
-int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro)
+int aloca_barco(barco embarcacao, char direc, int c, int l, char *ponteiro)
 {
     int i;
 
