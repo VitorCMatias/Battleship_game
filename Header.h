@@ -10,10 +10,11 @@
 #define maxcour 2
 #define maxtorp 2
 #define maxhidro 2
+#define teste 1
 
 typedef struct{
-    int tamanho;  //tamnho do embarcacao unidimensional
-    char tag;     // tag da embarcacao
+    int tamanho;  //tamanho do embarcacao unidimensional
+    char tag;     //tag da embarcacao
 }barco;
 
 
