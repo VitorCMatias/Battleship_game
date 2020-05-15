@@ -12,6 +12,7 @@
 #define maxhidro 2
 #define teste 1
 
+
 typedef struct{
     int tamanho;  //tamanho do embarcacao unidimensional
     char tag;     //tag da embarcacao

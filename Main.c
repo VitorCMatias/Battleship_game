@@ -58,6 +58,8 @@ int main(){
                 getch();
             }
             
+
+            
             break;
         case (3):
             if (ntorp<maxtorp) ntorp=ntorp+aloca_barco(torpedeiro,direcao,coord1,coord2,&player1); //torpedeiro

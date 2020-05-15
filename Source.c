@@ -154,6 +154,8 @@ int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro)
     }
 }
 
+
+
 void imprimir_instrucoes(){
         printf("\n------------------------------------------\n");
         printf("TIPOS DE EMBARCACOES:\n");
