@@ -51,3 +51,4 @@ void imprimir_instrucoes(int nport, int ncour, int ntorp, int nhidro);
 int setar_tipo_embarcacao();
 void setar_coordenadas_de_entrada();
 void verificar_coordenadas_de_entrada(int *coord1, int *coord2);
+void imprime_capa();

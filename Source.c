@@ -214,3 +214,26 @@ void setar_coordenadas_de_entrada(int *coord1, int *coord2)
         }
     }
 }
+
+void imprime_capa(){ //le o arquivo .txt e imprime a tela inicial com o barco.
+    FILE *arq;
+
+    int i,LIN=100;
+    char linha[LIN];
+
+    arq=fopen("tela_batalha-naval.txt","r");
+
+    if (arq==NULL) printf("Erro ao abrir o arquivo.");
+
+    while ((fgets(linha,LIN,arq))!=NULL){
+        printf("%s",linha);
+
+    }
+    
+    fclose(arq);
+
+    printf("\n\n\n       1-PLAYER VS PLAYER.");
+    printf("\n       2-JOGAR CONTRA A MAQUINA.");
+    printf("\n       3-DESENVOLVEDORES.");
+    printf("\n\n\n       MODO DE JOGO:");
+}
