@@ -10,7 +10,7 @@ int main()
     char orientacao;
     char *player1[N_LINHAS][N_COLUNAS];
     bool t = 0;
-    int opicao,i = 0;
+    int opicao, i = 0;
     int embarcacao;
 
     t_embarcacao battleship = {'B', "Battleship", 4, 2};
@@ -22,17 +22,19 @@ int main()
     t_embarcacao *embarcacoes[5] = {&battleship, &carier, &destroyer, &patrol_boat, &submarine};
     imprime_capa(); //imprime a tela inicial com o desenho do barco
 
-    scanf("%i",&opicao); //opição do modo de jogo
-    
-    switch (opicao){
-    case 1:
-        system("cls");
-        inicializa_player(&player1); //inicializa o player
-    //Inicializar Jogo
-    inicializar_jogo(player1);
-    imprimir_tela(player1);
-    imprimir_instrucoes(embarcacoes);
+    scanf("%i", &opicao); //opição do modo de jogo
 
+    switch (opicao)
+    {
+    case 1:
+    
+        system("cls");
+        //Inicializar Jogo
+        inicializar_jogo(player1);
+        imprimir_tela(player1);
+        imprimir_instrucoes(embarcacoes);
+        break;
+    }
     do
     {
         //Obter input
