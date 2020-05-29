@@ -22,6 +22,7 @@ void inicializar_jogo(char *mapa[N_LINHAS][N_COLUNAS])
 
 void imprimir_tela(char *player[N_LINHAS][N_COLUNAS])
 {
+    system("cls");
 
     int i, j, k;
     char identificador_coluna = 'A';
