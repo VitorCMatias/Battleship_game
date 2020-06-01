@@ -21,8 +21,8 @@
 #define PATROL_BOAT 2
 
 #define MAX_CARRIER 2
-#define MAX_BATTLESHIP 2
-#define MAX_DESTROYER 2
+#define MAX_BATTLESHIP 1
+#define MAX_DESTROYER 1
 #define MAX_SUBMARINE 2
 #define MAX_PATROL_BOAT 2
 #define MAX_NUM_BARCO 2
@@ -60,7 +60,12 @@ typedef struct
     char tag;    //tag da embarcacao
 } barco;
 
-void imprimir_tela(char *player[N_LINHAS][N_COLUNAS]);
+typedef struct
+{
+    char *armada[N_LINHAS][N_COLUNAS];
+}player;
+
+void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador);
 void inicializar_jogo(char *mapa[N_LINHAS][N_COLUNAS]);
 int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro);
 void gotoxy(short x, short y);

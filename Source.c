@@ -20,13 +20,15 @@ void inicializar_jogo(char *mapa[N_LINHAS][N_COLUNAS])
     }
 }
 
-void imprimir_tela(char *player[N_LINHAS][N_COLUNAS])
+void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
 {
     system("cls");
 
     int i, j, k;
     char identificador_coluna = 'A';
+
     printf("\n\n                   BATALHA NAVAL\n\n");
+    printf("\n\n                     PLAYER%i\n\n",contador+1);
     printf("    ");
     for (i = 0; i < N_COLUNAS; i++)
     {
@@ -242,8 +244,20 @@ bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_c
 }
 
 bool verificar_embarcacoes_disponiveis(t_embarcacao *embarcacoes[5])
-{
-    return embarcacoes[0]->max_quantidade > 0 || embarcacoes[1]->max_quantidade > 0 || embarcacoes[2]->max_quantidade > 0 || embarcacoes[3]->max_quantidade > 0 || embarcacoes[4]->max_quantidade > 0;
+{   
+    bool condicao;
+
+    if(embarcacoes[0]->max_quantidade > 0 || embarcacoes[1]->max_quantidade > 0 || embarcacoes[2]->max_quantidade > 0 || embarcacoes[3]->max_quantidade > 0 || embarcacoes[4]->max_quantidade > 0) condicao=1;
+    else{
+        condicao=0;
+        embarcacoes[0]->max_quantidade=MAX_BATTLESHIP;
+        embarcacoes[1]->max_quantidade=MAX_CARRIER;
+        embarcacoes[2]->max_quantidade=MAX_DESTROYER;
+        embarcacoes[3]->max_quantidade=MAX_PATROL_BOAT;
+        embarcacoes[4]->max_quantidade=MAX_SUBMARINE;
+    }
+
+    return condicao;
 }
 
 /*void inicializar_embarcacao(t_embarcacao *embarcacao[5])

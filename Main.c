@@ -8,18 +8,22 @@ int main()
     int coord_x, coord_y;
     char tag;
     char orientacao;
-    char *player1[N_LINHAS][N_COLUNAS];
+    //char *player1[N_LINHAS][N_COLUNAS];
     bool t = 0;
-    int opicao, i = 0;
+    int opicao;
     int embarcacao;
+    int i;
 
-    t_embarcacao battleship = {'B', "Battleship", 4, 2};
-    t_embarcacao carier = {'C', "Carier", 5, 2};
-    t_embarcacao destroyer = {'D', "Destroyer", 3, 2};
-    t_embarcacao patrol_boat = {'P', "Patrol Boat", 2, 2};
-    t_embarcacao submarine = {'S', "Submarine", 3, 2};
+    player player[2];
+
+    t_embarcacao battleship = {'B', "Battleship", BATTLESHIP, MAX_BATTLESHIP};
+    t_embarcacao carier = {'C', "Carrier", CARRIER, MAX_CARRIER};
+    t_embarcacao destroyer = {'D', "Destroyer", DESTROYER, MAX_DESTROYER};
+    t_embarcacao patrol_boat = {'P', "Patrol Boat",PATROL_BOAT, MAX_PATROL_BOAT};
+    t_embarcacao submarine = {'S', "Submarine", SUBMARINE, MAX_SUBMARINE};
 
     t_embarcacao *embarcacoes[5] = {&battleship, &carier, &destroyer, &patrol_boat, &submarine};
+
     while (true){
     
     system("cls");
@@ -31,45 +35,51 @@ int main()
     switch (opicao)
     {
     case 1:
-    
-        system("cls");
-        //Inicializar Jogo
-        inicializar_jogo(player1);
-        imprimir_tela(player1);
-        imprimir_instrucoes(embarcacoes);
-        do
+
+        for ( i = 0; i < 2; i++)
         {
-            //Obter input
-            embarcacao = setar_tipo_embarcacao();
-            //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
-            orientacao = setar_direcao_embarcacao();
-            setar_coordenadas_de_entrada(&coord_x, &coord_y);
-
-            //Alocar embarcacao
-            alocar_embarcacao(coord_x, coord_y, orientacao, player1, embarcacoes[embarcacao]);
-            Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
-            // Reimprimir tela
-            imprimir_tela(player1);
+            system("cls");
+            //Inicializar Jogo
+            inicializar_jogo(player[i].armada);
+            imprimir_tela( player[i].armada, i);
             imprimir_instrucoes(embarcacoes);
-        } while (verificar_embarcacoes_disponiveis(embarcacoes));
+            do
+            {
+                //Obter input
+                embarcacao = setar_tipo_embarcacao();
+                //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
+                orientacao = setar_direcao_embarcacao();
+                setar_coordenadas_de_entrada(&coord_x, &coord_y);
 
+
+
+
+                //Alocar embarcacao
+                alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao]);
+                Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
+                // Reimprimir tela
+                imprimir_tela( player[i].armada, i);
+                imprimir_instrucoes(embarcacoes);
+            } while (verificar_embarcacoes_disponiveis(embarcacoes));
+        }
+        
         break;
     case 2:
 
-        printf("\n\n           FUNCAO AINDA NAO IMPLEMENTADA.");
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
         system("pause");
 
         break;
     
     case 3:
 
-        printf("\n\n           FUNCAO AINDA NAO IMPLEMENTADA.");
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
         system("pause");
         break;
 
     default:
 
-        printf("\n\n           OPCAO INVALIDA.");
+        printf("\n\n                OPCAO INVALIDA.");
         system("pause");
         break;
 
