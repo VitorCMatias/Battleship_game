@@ -20,11 +20,11 @@
 #define SUBMARINE 3
 #define PATROL_BOAT 2
 
-#define MAX_CARRIER 2
+#define MAX_CARRIER 0
 #define MAX_BATTLESHIP 1
-#define MAX_DESTROYER 1
-#define MAX_SUBMARINE 2
-#define MAX_PATROL_BOAT 2
+#define MAX_DESTROYER 0
+#define MAX_SUBMARINE 0
+#define MAX_PATROL_BOAT 0
 #define MAX_NUM_BARCO 2
 enum e_coluna
 {
@@ -63,7 +63,9 @@ typedef struct
 typedef struct
 {
     char *armada[N_LINHAS][N_COLUNAS];
-}player;
+    char *ataque[N_LINHAS][N_COLUNAS];
+    int pontos;
+}PLAYER;
 
 void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador);
 void inicializar_jogo(char *mapa[N_LINHAS][N_COLUNAS]);
@@ -87,5 +89,6 @@ char setar_direcao_embarcacao();
 bool verificar_embarcacoes_disponiveis(t_embarcacao *embarcacoes[5]);
 bool verificar_sobreposicao_de_embarcacoes_horizontal(int coord_linha, int coord_coluna, int tamanho_embarcacao, char *mapa[N_LINHAS][N_COLUNAS]);
 bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_coluna, int tamanho_embarcacao, char *mapa[N_LINHAS][N_COLUNAS]);
-
-//void inicializar_embarcacao(t_embarcacao *embarcacao[5]);
+int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]);
+void imprimir_pontuacao(int atacante,int defensor);
+void mensagem_vencedor(int player);

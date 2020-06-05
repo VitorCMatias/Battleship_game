@@ -3,18 +3,18 @@
 int main()
 {
 
-    //enum e_coluna aux;
-    //int coord1, coord2, tipo, nport = 0, ncour = 0, ntorp = 0, nhidro = 0;
     int coord_x, coord_y;
     char tag;
     char orientacao;
-    //char *player1[N_LINHAS][N_COLUNAS];
     bool t = 0;
     int opicao;
     int embarcacao;
     int i;
+    int contagem_de_rodadas=0,seleciona_player;
+    int incremento;
+    int acertou;
 
-    player player[2];
+    PLAYER player[2];
 
     t_embarcacao battleship = {'B', "Battleship", BATTLESHIP, MAX_BATTLESHIP};
     t_embarcacao carier = {'C', "Carrier", CARRIER, MAX_CARRIER};
@@ -62,8 +62,41 @@ int main()
                 imprimir_instrucoes(embarcacoes);
             } while (verificar_embarcacoes_disponiveis(embarcacoes));
         }
+
+        inicializar_jogo(player[0].ataque); //inicializa o mapa de ataque dos jogadores.
+        inicializar_jogo(player[1].ataque);
+
+        //inicializa os pontos dos players.
+        player[0].pontos=player[1].pontos= MAX_CARRIER*CARRIER+MAX_BATTLESHIP*BATTLESHIP+MAX_DESTROYER*DESTROYER+MAX_SUBMARINE*SUBMARINE+MAX_PATROL_BOAT*PATROL_BOAT;
+
+        while (player[0].pontos!=0 && player[1].pontos!=0) //ciclo até alguem perder
+        {   
+            seleciona_player=contagem_de_rodadas%2; //alterna os players que jogam
+
+            if (seleciona_player==0) incremento=1; //incremento altera conforme o player
+            else incremento=-1;
+            
+            imprimir_tela( player[seleciona_player].ataque, seleciona_player);
+            imprimir_pontuacao(player[seleciona_player].pontos,player[seleciona_player+incremento].pontos);
+            acertou=atirar(player[seleciona_player].ataque, player[seleciona_player+incremento].armada);
+
+            if(acertou==-1){
+                salvar_jogo(player);
+                break;
+            } 
+
+            player[seleciona_player+incremento].pontos-=acertou;//retira um ponto do adversário caso acerte o barco
+            contagem_de_rodadas++;
+            getch();
+        }
+
+        if (acertou==-1) break;// se decidir sair do jogo para aqui
+
+        if (player[0].pontos==0) mensagem_vencedor(1); //imprime a tela de vitória
+        else mensagem_vencedor(2);
         
         break;
+
     case 2:
 
         printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
@@ -76,6 +109,19 @@ int main()
         printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
         system("pause");
         break;
+
+    case 4:
+
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
+        system("pause");
+        break;
+    
+    case 5:
+
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
+        system("pause");
+        break;
+
 
     default:
 

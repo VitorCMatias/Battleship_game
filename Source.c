@@ -126,21 +126,27 @@ void setar_coordenadas_de_entrada(int *coord_coluna, int *coord_linha)
 
 bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
 {
-    bool alocacao_bem_sucedida;
-    switch (embarcacao_orientacao)
-    {
-    case 'H':
-        alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao);
-        break;
-    case 'V':
-        alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao);
-        break;
+    bool alocacao_bem_sucedida =false;
 
-    default:
-        puts("Orientacao invalida!");
-        alocacao_bem_sucedida = false;
-        break;
+    if (embarcacao->max_quantidade>0)
+    {
+        switch (embarcacao_orientacao)
+        {
+        case 'H':
+            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao);
+            break;
+        case 'V':
+            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao);
+            break;
+
+        default:
+            puts("Orientacao invalida!");
+            alocacao_bem_sucedida = false;
+            break;
+        }
+        return alocacao_bem_sucedida;
     }
+
     return alocacao_bem_sucedida;
 }
 
@@ -296,6 +302,7 @@ void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao)
     else
     {
         printf("Voce jah utilizou todas as embarcacoes do tipo %s, selecione outra unidade!\n", embarcacao->nome);
+        getch();
     }
 
     /*
@@ -380,7 +387,91 @@ void imprime_capa(){ //le o arquivo .txt e imprime a tela inicial com o barco.
     fclose(arq);
 
     printf("\n\n\n       1-PLAYER VS PLAYER.");
-    printf("\n       2-JOGAR CONTRA A MAQUINA.");
-    printf("\n       3-DESENVOLVEDORES.");
+    printf("\n       2-CONTINUAR UM JOGO.");
+    printf("\n       3-JOGAR CONTRA A MAQUINA.");
+    printf("\n       4-DICAS SOBRE O JOGO.");
+    printf("\n       5-DESENVOLVEDORES.");
     printf("\n\n\n       MODO DE JOGO:");
+}
+
+int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
+    
+    char coord_xc;
+    int coord_y,coord_x;
+    int acertou=0;
+
+
+    do{
+        printf("\n\n\n      ATIRAR:");
+        scanf(" %c",&coord_xc);
+        coord_xc = toupper(coord_xc);
+
+        if (coord_xc=='S') return -1;
+      
+        scanf(" %i",&coord_y);
+
+        if(coord_xc< 'A' || coord_xc> 'P' || coord_y<0 || coord_y>N_LINHAS) printf("\n    Cordenadas nao pertencentes ao mapa.\n");
+
+    } while (coord_xc< 'A' || coord_xc> 'P' || coord_y<0 || coord_y>N_LINHAS);
+    
+    coord_x= coord_xc-'A';
+
+    if (armada[coord_x][coord_y]!="--") {
+        if (ataque[coord_x][coord_y]!=armada[coord_x][coord_y]){
+            printf("\n\n             TIRO NO BARCO!!!!");
+            ataque[coord_x][coord_y]=armada[coord_x][coord_y];
+            acertou=1;
+        }
+        else printf("\n\n             TIRO NO BARCO...MAS NO MESMO LOCAL...TIRO PERDIDO."); 
+    }
+
+    else{
+        printf("\n\n             TIRO NA AGUA!!!!");
+        ataque[coord_x][coord_y]="**";
+
+    } 
+    return acertou;
+}
+
+void imprimir_pontuacao(int atacante,int defensor){
+
+    printf("\n\n      POSICOES INIMIGAS RESTANTES: %i\n",defensor);
+    printf("      POSICOES AMIGAS SOBREVIVENTES: %i\n", atacante);
+
+    printf("\n       Para sair digite 'S'.");
+}
+
+void mensagem_vencedor(int player){
+
+    system("cls");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n                                                     FIM DO JOGO");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n                                                PLAYER%i FOI O VENCEDOR",player);
+
+    getch();
+}
+
+void salvar_jogo( PLAYER player[2]){
+
+    char nome[20];
+    char escolha;
+
+    FILE *arq;
+
+    system("cls");
+
+    do{
+        printf("Deseja salvar o jogo?(Y/N)");
+        scanf(" %c",&escolha);
+
+        escolha=toupper(escolha);
+
+        if (escolha=='Y'){
+            printf("Digite um nome para salavar o jogo:");
+            scanf(" %s",nome);
+            getch();
+        }
+        
+    } while (escolha!='Y' && escolha!='N');
+    
+
 }
