@@ -108,11 +108,13 @@ void setar_coordenadas_de_entrada(int *coord_coluna, int *coord_linha)
         if (coordenada_x < 'A' || coordenada_x > 'P')
         {
             puts("ERRO! Valor da coordenada coluna esta fora do intervalo de A a P \n");
+            getch();
             coordenada_invalida = true;
         }
         else if (coordenada_y < 0 || coordenada_y > N_LINHAS)
         {
             puts("ERRO! Valor da coordenada linha esta fora do intervalo de 0 a 13 \n");
+            getch();
             coordenada_invalida = true;
         }
         else
@@ -140,7 +142,6 @@ bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orient
             break;
 
         default:
-            puts("Orientacao invalida!");
             alocacao_bem_sucedida = false;
             break;
         }
@@ -159,16 +160,19 @@ bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, cha
     if (coord_linha > N_LINHAS)
     {
         printf("A posicao da linha informada, %d, excede o tamanho do mapa que eh %d\n", coord_linha, N_LINHAS);
+        getch();
         return false;
     }
     else if (coord_coluna + embarcacao->tamanho > N_COLUNAS)
     {
         printf("Nao ah espaco suficiente para embarcacao!\nA embarcacao informada tem o tamanho de %d, excedendo o tamanho do mapa em %d. Informe outro valor!\n", embarcacao->tamanho, (coord_coluna + embarcacao->tamanho) - N_COLUNAS);
+        getch();
         return false;
     }
     else if (verificar_sobreposicao_de_embarcacoes_horizontal(coord_linha, coord_coluna, embarcacao->tamanho, mapa))
     {
         puts("Jah existe uma embarcacao nessa coordenada, tente outra");
+        getch();
         return false;
     }
 
@@ -212,14 +216,15 @@ bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char 
         printf("A posicao da coluna informada, %d, excede o tamanho do mapa que eh %d\n", coord_linha, N_COLUNAS);
         posicao_valida = false;
     }
-    else if (coord_coluna + embarcacao->tamanho > N_LINHAS)
+    else if (coord_linha + embarcacao->tamanho > N_LINHAS)
     {
         printf("Nao ah espaco suficiente para embarcacao!\nA embarcacao informada tem o tamanho de %d, excedendo o tamanho do mapa em %d. Informe outro valor!\n", embarcacao->tamanho, (coord_coluna + embarcacao->tamanho) - N_LINHAS);
         posicao_valida = false;
     }
-    else if (verificar_sobreposicao_de_embarcacoes_vertical(coord_linha, coord_coluna, embarcacao->tamanho, mapa))
-    {
+    else if (verificar_sobreposicao_de_embarcacoes_vertical(coord_linha, coord_coluna, embarcacao->tamanho, mapa)){
+
         puts("Jah existe uma embarcacao nessa coordenada, tente outra");
+        getch();
         posicao_valida = false;
     }
     else
@@ -416,10 +421,10 @@ int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
     
     coord_x= coord_xc-'A';
 
-    if (armada[coord_x][coord_y]!="--") {
-        if (ataque[coord_x][coord_y]!=armada[coord_x][coord_y]){
+    if (armada[coord_y][coord_x]!="--") {
+        if (ataque[coord_y][coord_x]!=armada[coord_y][coord_x]){
             printf("\n\n             TIRO NO BARCO!!!!");
-            ataque[coord_x][coord_y]=armada[coord_x][coord_y];
+            ataque[coord_y][coord_x]=armada[coord_y][coord_x];
             acertou=1;
         }
         else printf("\n\n             TIRO NO BARCO...MAS NO MESMO LOCAL...TIRO PERDIDO."); 
@@ -427,7 +432,7 @@ int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
 
     else{
         printf("\n\n             TIRO NA AGUA!!!!");
-        ataque[coord_x][coord_y]="**";
+        ataque[coord_y][coord_x]="**";
 
     } 
     return acertou;
@@ -450,28 +455,38 @@ void mensagem_vencedor(int player){
     getch();
 }
 
-void salvar_jogo( PLAYER player[2]){
+void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos){
 
-    char nome[20];
-    char escolha;
+    int i,j;
 
     FILE *arq;
 
-    system("cls");
+    arq=fopen(nome_partida,"a");
 
-    do{
-        printf("Deseja salvar o jogo?(Y/N)");
-        scanf(" %c",&escolha);
-
-        escolha=toupper(escolha);
-
-        if (escolha=='Y'){
-            printf("Digite um nome para salavar o jogo:");
-            scanf(" %s",nome);
-            getch();
+    if (arq==NULL){
+        printf("\nProblemas ao abrir o arquivo.");
+        getch();
+    }
+    else{
+        fprintf(arq,"%i \n",pontos);
+        for ( i = 0; i < N_LINHAS; i++){
+            for ( j = 0; j < N_COLUNAS; j++){
+                fprintf(arq," %s",armada[i][j]);
+            }
+            fprintf(arq,"\n");
         }
-        
-    } while (escolha!='Y' && escolha!='N');
+        fprintf(arq,"\n");
+
+        for ( i = 0; i < N_LINHAS; i++){
+            for ( j = 0; j < N_COLUNAS; j++){
+                fprintf(arq," %s",ataque[i][j]);
+            }
+            fprintf(arq,"\n");
+        }
+        fprintf(arq,"\n");
+    }
     
+    fclose(arq);
 
 }
+

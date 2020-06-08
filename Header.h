@@ -26,6 +26,8 @@
 #define MAX_SUBMARINE 0
 #define MAX_PATROL_BOAT 0
 #define MAX_NUM_BARCO 2
+
+#define TAM_NOME_PARTIDA 20
 enum e_coluna
 {
     A,
@@ -92,3 +94,5 @@ bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_c
 int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]);
 void imprimir_pontuacao(int atacante,int defensor);
 void mensagem_vencedor(int player);
+void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos);
+

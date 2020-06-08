@@ -6,6 +6,8 @@ int main()
     int coord_x, coord_y;
     char tag;
     char orientacao;
+    char nome_partida[TAM_NOME_PARTIDA];
+    char escolha;
     bool t = 0;
     int opicao;
     int embarcacao;
@@ -51,12 +53,8 @@ int main()
                 orientacao = setar_direcao_embarcacao();
                 setar_coordenadas_de_entrada(&coord_x, &coord_y);
 
-
-
-
                 //Alocar embarcacao
-                alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao]);
-                Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
+                if(alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao]))Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
                 // Reimprimir tela
                 imprimir_tela( player[i].armada, i);
                 imprimir_instrucoes(embarcacoes);
@@ -80,8 +78,31 @@ int main()
             imprimir_pontuacao(player[seleciona_player].pontos,player[seleciona_player+incremento].pontos);
             acertou=atirar(player[seleciona_player].ataque, player[seleciona_player+incremento].armada);
 
-            if(acertou==-1){
-                salvar_jogo(player);
+            if(acertou==-1){   
+                
+                system("cls");
+
+                do{
+                    printf("Deseja salvar o jogo?(Y/N)");
+                    scanf(" %c",&escolha);
+
+                    escolha=toupper(escolha);
+
+                    if (escolha=='Y'){
+                        printf("Digite um nome para salavar o jogo:");
+                        scanf(" %s",nome_partida);
+
+                        strcat(nome_partida,".txt");
+                    }
+                }while (escolha!='N' && escolha!='Y');
+
+                if (escolha!='N'){
+
+                    for ( i = 0; i < 2; i++){
+                        salvar_jogo(nome_partida,player[i].armada,player[i].ataque,player[i].pontos);                   
+                    }
+                }
+
                 break;
             } 
 
@@ -90,7 +111,8 @@ int main()
             getch();
         }
 
-        if (acertou==-1) break;// se decidir sair do jogo para aqui
+        if (acertou==-1) break;
+
 
         if (player[0].pontos==0) mensagem_vencedor(1); //imprime a tela de vitória
         else mensagem_vencedor(2);
@@ -99,7 +121,9 @@ int main()
 
     case 2:
 
-        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
+        system("cls");
+        //ler_partida(player);
+
         system("pause");
 
         break;
@@ -117,9 +141,17 @@ int main()
         break;
     
     case 5:
-
-        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
-        system("pause");
+        
+        system("cls");
+        printf("\n\n    JOGO DESENVOLVIDO PELOS ALUNOS:                                      ");
+        printf("\n\n                                      MARLON DOMINGUES DE OLIVEIRA        ");
+        printf("\n\n                                                     E                    ");
+        printf("\n\n                                         VITOR DA COSTA MATIAS            ");
+        printf("\n\n\n\n\n\n\n\n\n    PROJETO DESENVOLVIDO PARA A AVALIACAO NA MATERIA DE INTRODUCAO A PROGRAMACAO PARA ENGENHARIAS DO PRIMEIRO ");
+        printf("\n    SEMESTRE DE 2020.");
+        printf("\n\n\n    PROFESSOR RESPONSAVEL PELA DICIPLINA: JO UEYAMA.");
+        printf("\n\n\n    UNIVERSIDADE: UNIVERSIDADE DE SAO PAULO-USP (CAMPUS SAO CARLOS)");
+        getch();
         break;
 
 
