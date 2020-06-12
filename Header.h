@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 #define N_LINHAS 16
 #define N_COLUNAS 16
@@ -25,7 +26,7 @@
 #define MAX_DESTROYER 0
 #define MAX_SUBMARINE 0
 #define MAX_PATROL_BOAT 0
-#define MAX_NUM_BARCO 2
+
 
 #define TAM_NOME_PARTIDA 20
 enum e_coluna
@@ -81,10 +82,10 @@ void verificar_coordenadas_de_entrada(int *coord1, int *coord2);
 void imprime_capa();
 void imprimir_instrucoes(t_embarcacao *embarcacoes[5]);
 
-bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
+bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player);
 char *replaceWord(const char *s, const char *oldW, const char *newW);
-bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
-bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
+bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player);
+bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player);
 void teste(t_embarcacao *embarcacoes[5]);
 void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao);
 char setar_direcao_embarcacao();
@@ -94,5 +95,11 @@ bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_c
 int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]);
 void imprimir_pontuacao(int atacante,int defensor);
 void mensagem_vencedor(int player);
-void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos);
 
+
+void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos);
+void ler_partida(char nome_partida[TAM_NOME_PARTIDA], PLAYER *player1, PLAYER *player2);
+
+void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player, int rodadas);
+void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER *player1,PLAYER *player2);
+void inicializar_player(PLAYER *player);

@@ -27,22 +27,32 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
     int i, j, k;
     char identificador_coluna = 'A';
 
-    printf("\n\n                   BATALHA NAVAL\n\n");
-    printf("\n\n                     PLAYER%i\n\n",contador+1);
-    printf("    ");
+    struct tm *hr;
+
+    time_t segundos;
+
+    time(&segundos);
+
+    hr=localtime(&segundos);
+
+    printf("\n                                                BATALHA NAVAL                                  %2i:%2i \n",hr->tm_hour,hr->tm_min);
+    printf("\n                                                  PLAYER%i\n\n",contador+1);
+    printf("                 ");
+
     for (i = 0; i < N_COLUNAS; i++)
     {
-        printf("%c  ", identificador_coluna); //Imprime letras superiores,coordenadas
+        printf("   %c ", identificador_coluna); //Imprime letras superiores,coordenadas
         identificador_coluna++;
     }
-    printf("\n");
+    printf("\n\n");
 
     for (i = 0; i < N_LINHAS; i++)
     {
-        printf("%02i|", i); //imprime as coordenadas laterais
+        printf("             ");
+        printf(" %02i |", i); //imprime as coordenadas laterais
         for (j = 0; j < N_COLUNAS; j++)
         {
-            printf("%s|", player[i][j]); //imprime os termos da posicao
+            printf(" %s |", player[i][j]); //imprime os termos da posicao
         }
         printf("\n");
     }
@@ -51,17 +61,23 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
 void imprimir_instrucoes(t_embarcacao *embarcacoes[5])
 {
     int i;
-
-    printf("\n----------------------------------------------------------\n");
+    printf("\n                         ");
+    printf("----------------------------------------------------------\n");
+    printf("                           ");
     printf("TIPOS DE EMBARCACOES:\n");
     for (i = 0; i < 5; i++)
     {
+        printf("                       ");
         printf("\t\t %d-%s \t\t RESTANTES: %d\n", i + 1, embarcacoes[i]->nome, embarcacoes[i]->max_quantidade);
     }
 
+    printf("                           ");
     printf("DIRECAO:\n");
+    printf("                           ");
     printf("\t\t H - horizontal.\n");
+    printf("                           ");
     printf("\t\t V - vertical.\n");
+    printf("\n                         ");
     printf("------------------------------------------------------------\n");
 }
 
@@ -71,6 +87,7 @@ int setar_tipo_embarcacao()
 
     do
     {
+        printf("\n                         ");
         printf("Tipo de embarcacao: ");
         scanf("%d", &tipo_embarcacao);
         if (tipo_embarcacao < 1 || tipo_embarcacao > 5)
@@ -85,6 +102,7 @@ char setar_direcao_embarcacao()
     char direcao_embarcacao;
     do
     {
+        printf("\n                         ");
         printf("direcao: ");
         scanf(" %[^\n]c ", &direcao_embarcacao); //direção que será colocado a embarcação
         direcao_embarcacao = toupper(direcao_embarcacao);
@@ -102,6 +120,7 @@ void setar_coordenadas_de_entrada(int *coord_coluna, int *coord_linha)
     bool coordenada_invalida;
     do
     {
+        printf("\n                         ");
         printf("cordenadas de origem: ");
         scanf(" %c%i", &coordenada_x, &coordenada_y); //coordenadas do pivo da embarcação
         coordenada_x = toupper(coordenada_x);
@@ -126,7 +145,7 @@ void setar_coordenadas_de_entrada(int *coord_coluna, int *coord_linha)
     } while (coordenada_invalida);
 }
 
-bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
 {
     bool alocacao_bem_sucedida =false;
 
@@ -135,10 +154,10 @@ bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orient
         switch (embarcacao_orientacao)
         {
         case 'H':
-            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao);
+            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao,player);
             break;
         case 'V':
-            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao);
+            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao,player);
             break;
 
         default:
@@ -151,11 +170,13 @@ bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orient
     return alocacao_bem_sucedida;
 }
 
-bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
 {
     int i;
+    char numeros[2]={'1','2'};
+
     char *str = malloc(2 * sizeof(char));
-    sprintf(str, "%c%d", embarcacao->tag, MAX_NUM_BARCO - embarcacao->max_quantidade);
+    sprintf(str, "%c%c", embarcacao->tag, numeros[player]);
 
     if (coord_linha > N_LINHAS)
     {
@@ -182,6 +203,7 @@ bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, cha
         for (i = coord_coluna; i < (coord_coluna + embarcacao->tamanho); i++)
         {
             mapa[coord_linha][i] = str;
+            //mapa[coord_linha][i] = "BA";
         }
         return true;
     }
@@ -204,12 +226,13 @@ bool verificar_sobreposicao_de_embarcacoes_horizontal(int coord_linha, int coord
     }
 }
 
-bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
 {
     int i;
     char *str = malloc(2 * sizeof(char));
+    char numeros[2]={'1','2'};
     bool posicao_valida;
-    sprintf(str, "%c%d", embarcacao->tag, MAX_NUM_BARCO - embarcacao->max_quantidade);
+    sprintf(str, "%c%c", embarcacao->tag,numeros[player]);
 
     if (coord_linha > N_COLUNAS)
     {
@@ -233,6 +256,7 @@ bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char 
         for (i = coord_linha; i < (coord_linha + embarcacao->tamanho); i++)
         {
             mapa[i][coord_coluna] = str;
+            //mapa[i][coord_coluna] = "BA";
         }
         posicao_valida = true;
     }
@@ -271,33 +295,6 @@ bool verificar_embarcacoes_disponiveis(t_embarcacao *embarcacoes[5])
     return condicao;
 }
 
-/*void inicializar_embarcacao(t_embarcacao *embarcacao[5])
-{
-    //t_embarcacao *embarcacao[5];
-    
-    embarcacao[0]->tag = 'C';
-    embarcacao[0]->tamanho = 5;
-    embarcacao[0]->max_quantidade = 2;
-
-    embarcacao[1]->tag = 'B';
-    embarcacao[1]->tamanho = 4;
-    embarcacao[1]->max_quantidade = 2;
-
-    embarcacao[2]->tag = 'D';
-    embarcacao[2]->tamanho = 3;
-    embarcacao[2]->max_quantidade = 2;
-
-    embarcacao[3]->tag = 'S';
-    embarcacao[3]->tamanho = 3;
-    embarcacao[3]->max_quantidade = 2;
-
-    embarcacao[4]->tag = 'P',
-    embarcacao[4]->tamanho = 2;
-    embarcacao[4]->max_quantidade = 2;
-
-    return embarcacao;
-}*/
-
 void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao)
 {
     if (embarcacao->max_quantidade > 0)
@@ -310,30 +307,6 @@ void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao)
         getch();
     }
 
-    /*
-    switch (tag)
-    {
-    case 'B':
-        embarcacoes[0]->max_quantidade -= 1;
-        break;
-    case 'C':
-        embarcacoes[1]->max_quantidade -= 1;
-        break;
-    case 'D':
-        embarcacoes[2]->max_quantidade -= 1;
-        break;
-    case 'P':
-        embarcacoes[3]->max_quantidade -= 1;
-        break;
-    case 'S':
-        embarcacoes[4]->max_quantidade -= 1;
-        break;
-
-    default:
-        printf("O valor informado %c, nao representa nenhuma embarcacao! Digite novamente\n", tag);
-        break;
-    }
-    */
 }
 
 char *replaceWord(const char *s, const char *oldW, const char *newW)
@@ -407,7 +380,8 @@ int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
 
 
     do{
-        printf("\n\n\n      ATIRAR:");
+        printf("\n\n\n                       ");
+        printf("      ATIRAR:");
         scanf(" %c",&coord_xc);
         coord_xc = toupper(coord_xc);
 
@@ -440,10 +414,16 @@ int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
 
 void imprimir_pontuacao(int atacante,int defensor){
 
-    printf("\n\n      POSICOES INIMIGAS RESTANTES: %i\n",defensor);
+    printf("\n\n                            ");
+    printf("---------------------------------------------------------");
+    printf("\n                           ");
+    printf("      POSICOES INIMIGAS RESTANTES: %i\n",defensor);
+    printf("                           ");
     printf("      POSICOES AMIGAS SOBREVIVENTES: %i\n", atacante);
-
-    printf("\n       Para sair digite 'S'.");
+    printf("\n                          ");
+    printf("       Para sair digite 'S'.");
+    printf("\n                            ");
+    printf("---------------------------------------------------------");
 }
 
 void mensagem_vencedor(int player){
@@ -455,38 +435,49 @@ void mensagem_vencedor(int player){
     getch();
 }
 
-void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos){
-
-    int i,j;
+void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player,int rodadas){
 
     FILE *arq;
 
-    arq=fopen(nome_partida,"a");
+    arq=fopen(nome_arquivo,"ab");
 
     if (arq==NULL){
-        printf("\nProblemas ao abrir o arquivo.");
-        getch();
+        printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
     }
     else{
-        fprintf(arq,"%i \n",pontos);
-        for ( i = 0; i < N_LINHAS; i++){
-            for ( j = 0; j < N_COLUNAS; j++){
-                fprintf(arq," %s",armada[i][j]);
-            }
-            fprintf(arq,"\n");
-        }
-        fprintf(arq,"\n");
 
-        for ( i = 0; i < N_LINHAS; i++){
-            for ( j = 0; j < N_COLUNAS; j++){
-                fprintf(arq," %s",ataque[i][j]);
-            }
-            fprintf(arq,"\n");
-        }
-        fprintf(arq,"\n");
+        fwrite(&player,sizeof(PLAYER),1,arq);
+        //fwrite(&rodadas,sizeof(int),1,arq);
+        
     }
     
     fclose(arq);
-
+    
 }
 
+void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER *player1,PLAYER *player2){
+
+    FILE *arq;
+
+    arq=fopen(nome_arquivo,"rb");
+
+    if (arq==NULL){
+        printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
+    }
+    else{
+        fread(&player1,sizeof(PLAYER),1,arq);
+        fread(&player2,sizeof(PLAYER),1,arq);
+    }
+    getch();
+    printf(" %s",player1->armada[0][0]);
+    getch();
+
+    fclose(arq);
+}
+
+void inicializar_player(PLAYER *player){
+
+    inicializar_jogo(player->armada);
+    inicializar_jogo(player->ataque);
+    player->pontos=0;
+}

@@ -16,6 +16,8 @@ int main()
     int incremento;
     int acertou;
 
+    FILE *arq;
+
     PLAYER player[2];
 
     t_embarcacao battleship = {'B', "Battleship", BATTLESHIP, MAX_BATTLESHIP};
@@ -54,7 +56,7 @@ int main()
                 setar_coordenadas_de_entrada(&coord_x, &coord_y);
 
                 //Alocar embarcacao
-                if(alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao]))Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
+                if(alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao], i))Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
                 // Reimprimir tela
                 imprimir_tela( player[i].armada, i);
                 imprimir_instrucoes(embarcacoes);
@@ -92,14 +94,14 @@ int main()
                         printf("Digite um nome para salavar o jogo:");
                         scanf(" %s",nome_partida);
 
-                        strcat(nome_partida,".txt");
+                        strcat(nome_partida,".bin");
                     }
                 }while (escolha!='N' && escolha!='Y');
 
                 if (escolha!='N'){
 
                     for ( i = 0; i < 2; i++){
-                        salvar_jogo(nome_partida,player[i].armada,player[i].ataque,player[i].pontos);                   
+                        salva_jogo(nome_partida,player[i],contagem_de_rodadas);    
                     }
                 }
 
@@ -122,21 +124,93 @@ int main()
     case 2:
 
         system("cls");
-        //ler_partida(player);
+        fflush(stdin);
+        printf("Digite o nome da partida que deseja resgatar:");
+        scanf(" %s",nome_partida);
 
-        system("pause");
+        strcat(nome_partida,".bin");
 
-        break;
+        arq=fopen(nome_partida,"rb");
+
+        if (arq==NULL){
+            printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
+            getch();
+            break;
+        }
+        else{
+            
+            inicializar_player(&player[0]);
+            inicializar_player(&player[1]);
+
+            fread(&player,sizeof(PLAYER),2,arq);
+            fread(&contagem_de_rodadas,sizeof(int),1,arq);
+
+            while (player[0].pontos!=0 && player[1].pontos!=0) //ciclo até alguem perder
+            {   
+                seleciona_player=contagem_de_rodadas%2; //alterna os players que jogam
+
+                if (seleciona_player==0) incremento=1; //incremento altera conforme o player
+                else incremento=-1;
+                
+                imprimir_tela( player[seleciona_player].ataque, seleciona_player);
+                imprimir_pontuacao(player[seleciona_player].pontos,player[seleciona_player+incremento].pontos);
+                acertou=atirar(player[seleciona_player].ataque, player[seleciona_player+incremento].armada);
+
+                if(acertou==-1){   
+                    
+                    system("cls");
+
+                    do{
+                        printf("Deseja salvar o jogo?(Y/N)");
+                        scanf(" %c",&escolha);
+
+                        escolha=toupper(escolha);
+
+                        if (escolha=='Y'){
+                            printf("Digite um nome para salavar o jogo:");
+                            scanf(" %s",nome_partida);
+
+                            strcat(nome_partida,".bin");
+                        }
+                    }while (escolha!='N' && escolha!='Y');
+
+                    if (escolha!='N'){
+
+                        for ( i = 0; i < 2; i++){
+                            //salvar_jogo(nome_partida,player[i].armada,player[i].ataque,player[i].pontos);   
+                            salva_jogo(nome_partida,player[i],seleciona_player);    
+                        }
+                    }
+
+                    break;
+                } 
+
+                player[seleciona_player+incremento].pontos-=acertou;//retira um ponto do adversário caso acerte o barco
+                contagem_de_rodadas++;
+                getch();
+            }
+
+            if (acertou==-1) break;
+
+
+            if (player[0].pontos==0) mensagem_vencedor(1); //imprime a tela de vitória
+            else mensagem_vencedor(2);
+            
+            break;
+
+        
+
+        }
     
     case 3:
 
-        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.  ");
         system("pause");
         break;
 
     case 4:
 
-        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.");
+        printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.  ");
         system("pause");
         break;
     
@@ -157,7 +231,7 @@ int main()
 
     default:
 
-        printf("\n\n                OPCAO INVALIDA.");
+        printf("\n\n                OPCAO INVALIDA.  ");
         system("pause");
         break;
 
