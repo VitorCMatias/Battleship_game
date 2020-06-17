@@ -33,10 +33,10 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
 
     time(&segundos);
 
-    hr=localtime(&segundos);
+    hr = localtime(&segundos);
 
-    printf("\n                                                BATALHA NAVAL                                  %2i:%2i \n",hr->tm_hour,hr->tm_min);
-    printf("\n                                                  PLAYER%i\n\n",contador+1);
+    printf("\n                                                BATALHA NAVAL                                  %2i:%2i \n", hr->tm_hour, hr->tm_min);
+    printf("\n                                                  PLAYER%i\n\n", contador + 1);
     printf("                 ");
 
     for (i = 0; i < N_COLUNAS; i++)
@@ -145,19 +145,19 @@ void setar_coordenadas_de_entrada(int *coord_coluna, int *coord_linha)
     } while (coordenada_invalida);
 }
 
-bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
+bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao, int player)
 {
-    bool alocacao_bem_sucedida =false;
+    bool alocacao_bem_sucedida = false;
 
-    if (embarcacao->max_quantidade>0)
+    if (embarcacao->max_quantidade > 0)
     {
         switch (embarcacao_orientacao)
         {
         case 'H':
-            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao,player);
+            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal(coord_linha, coord_coluna, mapa, embarcacao, player);
             break;
         case 'V':
-            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao,player);
+            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical(coord_linha, coord_coluna, mapa, embarcacao, player);
             break;
 
         default:
@@ -170,13 +170,13 @@ bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orient
     return alocacao_bem_sucedida;
 }
 
-bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
+bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao, int player)
 {
     int i;
-    char numeros[2]={'1','2'};
+    char numeros[2] = {'1', '2'};
 
     char *str = malloc(2 * sizeof(char));
-    sprintf(str, "%c%c", embarcacao->tag, numeros[player]);
+    sprintf(str, "%c%d", embarcacao->tag, player + 1);
 
     if (coord_linha > N_LINHAS)
     {
@@ -226,13 +226,13 @@ bool verificar_sobreposicao_de_embarcacoes_horizontal(int coord_linha, int coord
     }
 }
 
-bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player)
+bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao, int player)
 {
     int i;
     char *str = malloc(2 * sizeof(char));
-    char numeros[2]={'1','2'};
+    char numeros[2] = {'1', '2'};
     bool posicao_valida;
-    sprintf(str, "%c%c", embarcacao->tag,numeros[player]);
+    sprintf(str, "%c%c", embarcacao->tag, numeros[player]);
 
     if (coord_linha > N_COLUNAS)
     {
@@ -244,7 +244,8 @@ bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char 
         printf("Nao ah espaco suficiente para embarcacao!\nA embarcacao informada tem o tamanho de %d, excedendo o tamanho do mapa em %d. Informe outro valor!\n", embarcacao->tamanho, (coord_coluna + embarcacao->tamanho) - N_LINHAS);
         posicao_valida = false;
     }
-    else if (verificar_sobreposicao_de_embarcacoes_vertical(coord_linha, coord_coluna, embarcacao->tamanho, mapa)){
+    else if (verificar_sobreposicao_de_embarcacoes_vertical(coord_linha, coord_coluna, embarcacao->tamanho, mapa))
+    {
 
         puts("Jah existe uma embarcacao nessa coordenada, tente outra");
         getch();
@@ -279,17 +280,19 @@ bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_c
 }
 
 bool verificar_embarcacoes_disponiveis(t_embarcacao *embarcacoes[5])
-{   
+{
     bool condicao;
 
-    if(embarcacoes[0]->max_quantidade > 0 || embarcacoes[1]->max_quantidade > 0 || embarcacoes[2]->max_quantidade > 0 || embarcacoes[3]->max_quantidade > 0 || embarcacoes[4]->max_quantidade > 0) condicao=1;
-    else{
-        condicao=0;
-        embarcacoes[0]->max_quantidade=MAX_BATTLESHIP;
-        embarcacoes[1]->max_quantidade=MAX_CARRIER;
-        embarcacoes[2]->max_quantidade=MAX_DESTROYER;
-        embarcacoes[3]->max_quantidade=MAX_PATROL_BOAT;
-        embarcacoes[4]->max_quantidade=MAX_SUBMARINE;
+    if (embarcacoes[0]->max_quantidade > 0 || embarcacoes[1]->max_quantidade > 0 || embarcacoes[2]->max_quantidade > 0 || embarcacoes[3]->max_quantidade > 0 || embarcacoes[4]->max_quantidade > 0)
+        condicao = 1;
+    else
+    {
+        condicao = 0;
+        embarcacoes[0]->max_quantidade = MAX_BATTLESHIP;
+        embarcacoes[1]->max_quantidade = MAX_CARRIER;
+        embarcacoes[2]->max_quantidade = MAX_DESTROYER;
+        embarcacoes[3]->max_quantidade = MAX_PATROL_BOAT;
+        embarcacoes[4]->max_quantidade = MAX_SUBMARINE;
     }
 
     return condicao;
@@ -306,7 +309,6 @@ void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao)
         printf("Voce jah utilizou todas as embarcacoes do tipo %s, selecione outra unidade!\n", embarcacao->nome);
         getch();
     }
-
 }
 
 char *replaceWord(const char *s, const char *oldW, const char *newW)
@@ -347,21 +349,23 @@ char *replaceWord(const char *s, const char *oldW, const char *newW)
     }
 }
 
-void imprime_capa(){ //le o arquivo .txt e imprime a tela inicial com o barco.
+void imprime_capa()
+{ //le o arquivo .txt e imprime a tela inicial com o barco.
     FILE *arq;
 
-    int i,LIN=100;
+    int i, LIN = 100;
     char linha[100];
 
-    arq=fopen("tela_batalha-naval.txt","r");
+    arq = fopen("tela_batalha-naval.txt", "r");
 
-    if (arq==NULL) printf("Erro ao abrir o arquivo.");
+    if (arq == NULL)
+        printf("Erro ao abrir o arquivo.");
 
-    while ((fgets(linha,LIN,arq))!=NULL){
-        printf("%s",linha);
-
+    while ((fgets(linha, LIN, arq)) != NULL)
+    {
+        printf("%s", linha);
     }
-    
+
     fclose(arq);
 
     printf("\n\n\n       1-PLAYER VS PLAYER.");
@@ -372,52 +376,59 @@ void imprime_capa(){ //le o arquivo .txt e imprime a tela inicial com o barco.
     printf("\n\n\n       MODO DE JOGO:");
 }
 
-int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]){
-    
+int obter_instrucao(char *ataque[N_LINHAS][N_COLUNAS], char *armada[N_LINHAS][N_COLUNAS])
+{
+
     char coord_xc;
-    int coord_y,coord_x;
-    int acertou=0;
+    int coord_y, coord_x;
+    int acertou = 0;
 
-
-    do{
+    do
+    {
         printf("\n\n\n                       ");
         printf("      ATIRAR:");
-        scanf(" %c",&coord_xc);
+        scanf(" %c", &coord_xc);
         coord_xc = toupper(coord_xc);
 
-        if (coord_xc=='S') return -1;
-      
-        scanf(" %i",&coord_y);
+        if (coord_xc == 'S')
+            return -1;
 
-        if(coord_xc< 'A' || coord_xc> 'P' || coord_y<0 || coord_y>N_LINHAS) printf("\n    Cordenadas nao pertencentes ao mapa.\n");
+        scanf(" %i", &coord_y);
 
-    } while (coord_xc< 'A' || coord_xc> 'P' || coord_y<0 || coord_y>N_LINHAS);
-    
-    coord_x= coord_xc-'A';
+        if (coord_xc < 'A' || coord_xc > 'P' || coord_y < 0 || coord_y > N_LINHAS)
+            printf("\n    Cordenadas nao pertencentes ao mapa.\n");
 
-    if (armada[coord_y][coord_x]!="--") {
-        if (ataque[coord_y][coord_x]!=armada[coord_y][coord_x]){
+    } while (coord_xc < 'A' || coord_xc > 'P' || coord_y < 0 || coord_y > N_LINHAS);
+
+    coord_x = coord_xc - 'A';
+
+    if (armada[coord_y][coord_x] != "--")
+    {
+        if (ataque[coord_y][coord_x] != armada[coord_y][coord_x])
+        {
             printf("\n\n             TIRO NO BARCO!!!!");
-            ataque[coord_y][coord_x]=armada[coord_y][coord_x];
-            acertou=1;
+            ataque[coord_y][coord_x] = armada[coord_y][coord_x];
+            acertou = 1;
         }
-        else printf("\n\n             TIRO NO BARCO...MAS NO MESMO LOCAL...TIRO PERDIDO."); 
+        else
+            printf("\n\n             TIRO NO BARCO...MAS NO MESMO LOCAL...TIRO PERDIDO.");
     }
 
-    else{
+    else
+    {
         printf("\n\n             TIRO NA AGUA!!!!");
-        ataque[coord_y][coord_x]="**";
-
-    } 
+        ataque[coord_y][coord_x] = "**";
+    }
     return acertou;
 }
 
-void imprimir_pontuacao(int atacante,int defensor){
+void imprimir_pontuacao(int atacante, int defensor)
+{
 
     printf("\n\n                            ");
     printf("---------------------------------------------------------");
     printf("\n                           ");
-    printf("      POSICOES INIMIGAS RESTANTES: %i\n",defensor);
+    printf("      POSICOES INIMIGAS RESTANTES: %i\n", defensor);
     printf("                           ");
     printf("      POSICOES AMIGAS SOBREVIVENTES: %i\n", atacante);
     printf("\n                          ");
@@ -426,58 +437,118 @@ void imprimir_pontuacao(int atacante,int defensor){
     printf("---------------------------------------------------------");
 }
 
-void mensagem_vencedor(int player){
+void mensagem_vencedor(int player)
+{
 
     system("cls");
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n                                                     FIM DO JOGO");
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n                                                PLAYER%i FOI O VENCEDOR",player);
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n                                                PLAYER%i FOI O VENCEDOR", player);
 
     getch();
 }
 
-void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player,int rodadas){
+void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER player, int rodadas)
+{
 
     FILE *arq;
 
-    arq=fopen(nome_arquivo,"ab");
+    arq = fopen(nome_arquivo, "ab");
 
-    if (arq==NULL){
+    if (arq == NULL)
+    {
         printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
     }
-    else{
+    else
+    {
 
-        fwrite(&player,sizeof(PLAYER),1,arq);
+        fwrite(&player, sizeof(PLAYER), 1, arq);
         //fwrite(&rodadas,sizeof(int),1,arq);
-        
     }
-    
+
     fclose(arq);
-    
 }
 
-void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER *player1,PLAYER *player2){
+void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER *player1, PLAYER *player2)
+{
 
     FILE *arq;
 
-    arq=fopen(nome_arquivo,"rb");
+    arq = fopen(nome_arquivo, "rb");
 
-    if (arq==NULL){
+    if (arq == NULL)
+    {
         printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
     }
-    else{
-        fread(&player1,sizeof(PLAYER),1,arq);
-        fread(&player2,sizeof(PLAYER),1,arq);
+    else
+    {
+        fread(&player1, sizeof(PLAYER), 1, arq);
+        fread(&player2, sizeof(PLAYER), 1, arq);
     }
     getch();
-    printf(" %s",player1->armada[0][0]);
+    printf(" %s", player1->armada[0][0]);
     getch();
 
     fclose(arq);
 }
 
-void inicializar_player(PLAYER *player){
+void inicializar_player(PLAYER *player)
+{
 
     inicializar_jogo(player->armada);
     inicializar_jogo(player->ataque);
-    player->pontos=0;
+    player->pontos = 0;
+}
+
+int calcular_pontos()
+{
+    return MAX_CARRIER * CARRIER + MAX_BATTLESHIP * BATTLESHIP + MAX_DESTROYER * DESTROYER + MAX_SUBMARINE * SUBMARINE + MAX_PATROL_BOAT * PATROL_BOAT;
+}
+
+void inicializar_jogadores(char *mapa_p1[N_LINHAS][N_COLUNAS], char *mapa_p2[N_LINHAS][N_COLUNAS])
+{
+    inicializar_jogo(mapa_p1); //inicializa o mapa de ataque dos jogadores.
+    inicializar_jogo(mapa_p2);
+}
+
+void criar_arquivo(bool *jogo_salvo, PLAYER player[2], int contagem_de_rodadas)
+{
+    char escolha;
+    char nome_partida[TAM_NOME_PARTIDA];
+    do
+    {
+        printf("Deseja salvar o jogo?(Y/N)");
+        scanf(" %c[^\n]", &escolha);
+
+        escolha = toupper(escolha);
+
+        if (escolha == 'Y')
+        {
+            printf("Digite um nome para salavar o jogo:");
+            scanf(" %s[^\n]", nome_partida);
+
+            strcat(nome_partida, ".bin");
+        }
+    } while (escolha != 'N' && escolha != 'Y');
+
+    if (escolha == 'Y')
+    {
+        salva_jogo(nome_partida, player[0], contagem_de_rodadas);
+        salva_jogo(nome_partida, player[1], contagem_de_rodadas);
+    }
+
+    *jogo_salvo = true;
+}
+
+void imprimir_creditos()
+{
+    system("cls");
+    printf("\n\n    JOGO DESENVOLVIDO PELOS ALUNOS:                                      ");
+    printf("\n\n                                      MARLON DOMINGUES DE OLIVEIRA        ");
+    printf("\n\n                                                     E                    ");
+    printf("\n\n                                         VITOR DA COSTA MATIAS            ");
+    printf("\n\n\n\n\n\n\n\n\n    PROJETO DESENVOLVIDO PARA A AVALIACAO NA MATERIA DE INTRODUCAO A PROGRAMACAO PARA ENGENHARIAS DO PRIMEIRO ");
+    printf("\n    SEMESTRE DE 2020.");
+    printf("\n\n\n    PROFESSOR RESPONSAVEL PELA DICIPLINA: JO UEYAMA.");
+    printf("\n\n\n    UNIVERSIDADE: UNIVERSIDADE DE SAO PAULO-USP (CAMPUS SAO CARLOS)");
+    getch();
 }

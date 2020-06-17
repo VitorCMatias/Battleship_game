@@ -9,12 +9,6 @@
 #define N_LINHAS 16
 #define N_COLUNAS 16
 
-#define DIM 16
-#define MAX_PORT 2
-#define MAX_COUR 2
-#define MAX_TORP 2
-#define MAX_HIDRO 2
-
 #define CARRIER 5
 #define BATTLESHIP 4
 #define DESTROYER 3
@@ -29,26 +23,13 @@
 
 
 #define TAM_NOME_PARTIDA 20
-enum e_coluna
-{
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P
-};
 
+#define PLAYER1 1
+#define PLAYER2 -1
+
+#define SALVAR_JOGO -1
+
+#define TEMPO_DE_ATRASO 800
 typedef struct
 {
     char tag;
@@ -74,7 +55,7 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador);
 void inicializar_jogo(char *mapa[N_LINHAS][N_COLUNAS]);
 int aloca_barco(barco embarcacao, char direc, int l, int c, char *ponteiro);
 void gotoxy(short x, short y);
-void print_map();
+
 
 int setar_tipo_embarcacao();
 void setar_coordenadas_de_entrada();
@@ -86,13 +67,12 @@ bool alocar_embarcacao(int coord_coluna, int coord_linha, char embarcacao_orient
 char *replaceWord(const char *s, const char *oldW, const char *newW);
 bool testar_posicao_embarcacao_horizontal(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player);
 bool testar_posicao_embarcacao_vertical(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao,int player);
-void teste(t_embarcacao *embarcacoes[5]);
 void Atualizar_contagem_embarcacao(t_embarcacao *embarcacao);
 char setar_direcao_embarcacao();
 bool verificar_embarcacoes_disponiveis(t_embarcacao *embarcacoes[5]);
 bool verificar_sobreposicao_de_embarcacoes_horizontal(int coord_linha, int coord_coluna, int tamanho_embarcacao, char *mapa[N_LINHAS][N_COLUNAS]);
 bool verificar_sobreposicao_de_embarcacoes_vertical(int coord_linha, int coord_coluna, int tamanho_embarcacao, char *mapa[N_LINHAS][N_COLUNAS]);
-int atirar(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]);
+int obter_instrucao(char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS]);
 void imprimir_pontuacao(int atacante,int defensor);
 void mensagem_vencedor(int player);
 
@@ -103,3 +83,13 @@ void ler_partida(char nome_partida[TAM_NOME_PARTIDA], PLAYER *player1, PLAYER *p
 void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player, int rodadas);
 void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER *player1,PLAYER *player2);
 void inicializar_player(PLAYER *player);
+
+void inicializar_embarcacoes(t_embarcacao **embarcacoes[5]);
+
+int calcular_pontos();
+
+void inicializar_jogadores(char *mapa_p1[N_LINHAS][N_COLUNAS],char *mapa_p2[N_LINHAS][N_COLUNAS]);
+
+
+void criar_arquivo(bool *jogo_salvo, PLAYER player[2],int contagem_de_rodadas);
+void imprimir_creditos();
