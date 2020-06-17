@@ -27,6 +27,11 @@
 #define PLAYER1 1
 #define PLAYER2 -1
 
+#define JOGADOR1 0
+#define JOGADOR2 1
+
+
+
 #define SALVAR_JOGO -1
 
 #define TEMPO_DE_ATRASO 800
@@ -93,3 +98,7 @@ void inicializar_jogadores(char *mapa_p1[N_LINHAS][N_COLUNAS],char *mapa_p2[N_LI
 
 void criar_arquivo(bool *jogo_salvo, PLAYER player[2],int contagem_de_rodadas);
 void imprimir_creditos();
+
+int gerenciar_tela_de_instrucoes(PLAYER player[2], int seleciona_player);
+void imprimir_selecao_embarcacao(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);
+void imprimir_tela_de_instrucoes(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);

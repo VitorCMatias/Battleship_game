@@ -552,3 +552,27 @@ void imprimir_creditos()
     printf("\n\n\n    UNIVERSIDADE: UNIVERSIDADE DE SAO PAULO-USP (CAMPUS SAO CARLOS)");
     getch();
 }
+
+int gerenciar_tela_de_instrucoes(PLAYER player[2], int seleciona_player)
+{
+    int instrucao, jogar;
+    jogar = (seleciona_player == 0) ? JOGADOR2 : JOGADOR1;
+
+    imprimir_tela(player[seleciona_player].ataque, seleciona_player);
+    imprimir_pontuacao(player[seleciona_player].pontos, player[jogar].pontos);
+    instrucao = obter_instrucao(player[seleciona_player].ataque, player[jogar].armada);
+    return instrucao;
+}
+
+void imprimir_selecao_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5])
+{
+    imprimir_tela(player[i].armada, i);
+    imprimir_instrucoes(embarcacoes);
+}
+
+void imprimir_tela_de_instrucoes(PLAYER player[2], int i, t_embarcacao *embarcacoes[5])
+{
+    system("cls");
+    imprimir_selecao_embarcacao(player, i, embarcacoes);
+    imprimir_instrucoes(embarcacoes);
+}

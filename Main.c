@@ -46,14 +46,11 @@ int main()
 
             for (i = 0; i < 2; i++)
             {
-                system("cls");
-                //Inicializar Jogo
-                inicializar_jogo(player[i].armada);
-                imprimir_tela(player[i].armada, i);
-                imprimir_instrucoes(embarcacoes);
+                
+                imprimir_tela_de_instrucoes(player, i, embarcacoes);
+
                 do
                 {
-
                     //Obter input
                     embarcacao = setar_tipo_embarcacao();
                     //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
@@ -64,10 +61,9 @@ int main()
                     if (alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao], i))
                         Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
                     // Reimprimir tela
-
-                    imprimir_tela(player[i].armada, i);
-                    imprimir_instrucoes(embarcacoes);
+                    imprimir_selecao_embarcacao(player, i, embarcacoes);
                     Sleep(TEMPO_DE_ATRASO);
+
                 } while (verificar_embarcacoes_disponiveis(embarcacoes));
             }
 
@@ -81,14 +77,9 @@ int main()
             {
                 seleciona_player = contagem_de_rodadas % 2; //alterna os players que jogam
 
-                if (seleciona_player == 0)
-                    incremento = PLAYER1; //incremento altera conforme o player
-                else
-                    incremento = PLAYER2;
+                incremento = (seleciona_player == 0) ? PLAYER1 : PLAYER2; //incremento altera conforme o player
 
-                imprimir_tela(player[seleciona_player].ataque, seleciona_player);
-                imprimir_pontuacao(player[seleciona_player].pontos, player[seleciona_player + incremento].pontos);
-                instrucao = obter_instrucao(player[seleciona_player].ataque, player[seleciona_player + incremento].armada);
+                instrucao = gerenciar_tela_de_instrucoes(player, seleciona_player);
 
                 if (instrucao == SALVAR_JOGO)
                 {
@@ -110,6 +101,19 @@ int main()
                 mensagem_vencedor(2);
 
             break;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         case 2:
 
