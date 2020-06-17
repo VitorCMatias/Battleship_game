@@ -102,3 +102,4 @@ void imprimir_creditos();
 int gerenciar_tela_de_instrucoes(PLAYER player[2], int seleciona_player);
 void imprimir_selecao_embarcacao(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);
 void imprimir_tela_de_instrucoes(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);
+void adicionar_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5]);

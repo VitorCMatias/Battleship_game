@@ -576,3 +576,26 @@ void imprimir_tela_de_instrucoes(PLAYER player[2], int i, t_embarcacao *embarcac
     imprimir_selecao_embarcacao(player, i, embarcacoes);
     imprimir_instrucoes(embarcacoes);
 }
+
+void adicionar_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5])
+{
+    int embarcacao, coord_x, coord_y;
+    char orientacao;
+
+    do
+    {
+        //Obter input
+        embarcacao = setar_tipo_embarcacao();
+        //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
+        orientacao = setar_direcao_embarcacao();
+        setar_coordenadas_de_entrada(&coord_x, &coord_y);
+
+        //Alocar embarcacao
+        if (alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao], i))
+            Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
+        // Reimprimir tela
+        imprimir_selecao_embarcacao(player, i, embarcacoes);
+        Sleep(TEMPO_DE_ATRASO);
+
+    } while (verificar_embarcacoes_disponiveis(embarcacoes));
+}

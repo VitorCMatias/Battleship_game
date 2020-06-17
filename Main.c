@@ -46,25 +46,8 @@ int main()
 
             for (i = 0; i < 2; i++)
             {
-                
                 imprimir_tela_de_instrucoes(player, i, embarcacoes);
-
-                do
-                {
-                    //Obter input
-                    embarcacao = setar_tipo_embarcacao();
-                    //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
-                    orientacao = setar_direcao_embarcacao();
-                    setar_coordenadas_de_entrada(&coord_x, &coord_y);
-
-                    //Alocar embarcacao
-                    if (alocar_embarcacao(coord_x, coord_y, orientacao, player[i].armada, embarcacoes[embarcacao], i))
-                        Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
-                    // Reimprimir tela
-                    imprimir_selecao_embarcacao(player, i, embarcacoes);
-                    Sleep(TEMPO_DE_ATRASO);
-
-                } while (verificar_embarcacoes_disponiveis(embarcacoes));
+                adicionar_embarcacao(player, i, embarcacoes);
             }
 
             inicializar_jogadores(player[0].ataque, player[1].ataque);
