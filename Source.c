@@ -599,3 +599,166 @@ void adicionar_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5])
 
     } while (verificar_embarcacoes_disponiveis(embarcacoes));
 }
+
+int setar_tipo_embarcacao_aleatoria(t_embarcacao *embarcacoes[5])
+{
+
+    int tipo_embarcacao = -1;
+    int i;
+    for (i = 0; i < 5; i++)
+    {
+        if (embarcacoes[i]->max_quantidade > 0)
+        {
+            return i;
+        }
+    }
+
+    //printf("Tipo de embarcacao: ");
+    //scanf("%d", &tipo_embarcacao);
+
+    return tipo_embarcacao;
+}
+
+char setar_direcao_embarcacao_aleatoria()
+{
+    time_t timer;
+    srand((unsigned)time(&timer));
+
+    int direcao_embarcacao = rand() % 2;
+
+    return direcao_embarcacao == 0 ? 'H' : 'V';
+}
+
+void setar_coordenadas_de_entrada_aleatoria(int *coord_coluna, int *coord_linha)
+{
+    char coordenada_x;
+    int coordenada_y;
+
+    time_t timer;
+    srand((unsigned)time(&timer));
+
+    *coord_coluna = rand() % N_COLUNAS;
+    *coord_linha = rand() % N_LINHAS;
+}
+
+bool alocar_embarcacao_aleatorio(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+{
+    bool alocacao_bem_sucedida = false;
+    if (embarcacao->max_quantidade > 0)
+    {
+        switch (embarcacao_orientacao)
+        {
+        case 'H':
+            alocacao_bem_sucedida = testar_posicao_embarcacao_horizontal_aleatoria(coord_linha, coord_coluna, mapa, embarcacao);
+            break;
+        case 'V':
+            alocacao_bem_sucedida = testar_posicao_embarcacao_vertical_aleatoria(coord_linha, coord_coluna, mapa, embarcacao);
+
+            break;
+
+        default:
+            alocacao_bem_sucedida = false;
+            break;
+        }
+        return alocacao_bem_sucedida;
+    }
+
+    return alocacao_bem_sucedida;
+}
+
+void Atualizar_contagem_embarcacao_aleatoria(t_embarcacao *embarcacao)
+{
+    if (embarcacao->max_quantidade > 0)
+    {
+        embarcacao->max_quantidade -= 1;
+    }
+}
+
+bool testar_posicao_embarcacao_horizontal_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+{
+    int i;
+
+    char *str = malloc(2 * sizeof(char));
+    sprintf(str, "%c%d", embarcacao->tag, 2);
+
+    if (coord_linha > N_LINHAS)
+    {
+        return false;
+    }
+    else if (coord_coluna + embarcacao->tamanho > N_COLUNAS)
+    {
+        return false;
+    }
+    else if (verificar_sobreposicao_de_embarcacoes_horizontal(coord_linha, coord_coluna, embarcacao->tamanho, mapa))
+    {
+        return false;
+    }
+    else
+    {
+
+        for (i = coord_coluna; i < (coord_coluna + embarcacao->tamanho); i++)
+        {
+            mapa[coord_linha][i] = str;
+            //mapa[coord_linha][i] = "BA";
+        }
+        return true;
+    }
+}
+
+bool testar_posicao_embarcacao_vertical_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao)
+{
+    int i;
+    char *str = malloc(2 * sizeof(char));
+    bool posicao_valida;
+    sprintf(str, "%c%d", embarcacao->tag, 2);
+
+    if (coord_linha > N_COLUNAS)
+    {
+        posicao_valida = false;
+    }
+    else if (coord_linha + embarcacao->tamanho > N_LINHAS)
+    {
+        posicao_valida = false;
+    }
+    else if (verificar_sobreposicao_de_embarcacoes_vertical(coord_linha, coord_coluna, embarcacao->tamanho, mapa))
+    {
+        posicao_valida = false;
+    }
+    else
+    {
+
+        for (i = coord_linha; i < (coord_linha + embarcacao->tamanho); i++)
+        {
+            mapa[i][coord_coluna] = str;
+            //mapa[i][coord_coluna] = "BA";
+        }
+        posicao_valida = true;
+    }
+    return posicao_valida;
+}
+
+void imprimir_tela_debug(char *player[N_LINHAS][N_COLUNAS])
+{
+    //system("cls");
+
+    int i, j;
+    char identificador_coluna = 'A';
+
+    for (i = 0; i < N_COLUNAS; i++)
+    {
+        printf("   %c ", identificador_coluna); //Imprime letras superiores,coordenadas
+        identificador_coluna++;
+    }
+    printf("\n\n");
+
+    for (i = 0; i < N_LINHAS; i++)
+    {
+        printf("             ");
+        printf(" %02i |", i); //imprime as coordenadas laterais
+        for (j = 0; j < N_COLUNAS; j++)
+        {
+            printf(" %s |", player[i][j]); //imprime os termos da posicao
+        }
+        printf("\n");
+    }
+}

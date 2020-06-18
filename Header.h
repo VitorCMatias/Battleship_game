@@ -15,11 +15,11 @@
 #define SUBMARINE 3
 #define PATROL_BOAT 2
 
-#define MAX_CARRIER 0
+#define MAX_CARRIER 1
 #define MAX_BATTLESHIP 1
-#define MAX_DESTROYER 0
-#define MAX_SUBMARINE 0
-#define MAX_PATROL_BOAT 0
+#define MAX_DESTROYER 1
+#define MAX_SUBMARINE 1
+#define MAX_PATROL_BOAT 1
 
 
 #define TAM_NOME_PARTIDA 20
@@ -103,3 +103,14 @@ int gerenciar_tela_de_instrucoes(PLAYER player[2], int seleciona_player);
 void imprimir_selecao_embarcacao(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);
 void imprimir_tela_de_instrucoes(PLAYER  player[2], int i, t_embarcacao * embarcacoes[5]);
 void adicionar_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5]);
+
+
+int setar_tipo_embarcacao_aleatoria(t_embarcacao *embarcacoes[5]);
+char setar_direcao_embarcacao_aleatoria();
+void setar_coordenadas_de_entrada_aleatoria(int *coord_coluna, int *coord_linha);
+bool alocar_embarcacao_aleatorio(int coord_coluna, int coord_linha, char embarcacao_orientacao, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
+void Atualizar_contagem_embarcacao_aleatoria(t_embarcacao *embarcacao);
+bool testar_posicao_embarcacao_vertical_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
+bool testar_posicao_embarcacao_horizontal_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
+
+void imprimir_tela_debug(char *player[N_LINHAS][N_COLUNAS]);

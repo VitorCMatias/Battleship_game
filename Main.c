@@ -4,11 +4,7 @@ int main()
 {
     bool jogo_salvo = false;
     int coord_x, coord_y;
-    char tag;
-    char orientacao;
     char nome_partida[TAM_NOME_PARTIDA];
-    char escolha;
-    bool t = 0;
     int opicao;
     int embarcacao;
     int i;
@@ -27,7 +23,7 @@ int main()
     t_embarcacao submarine = {'S', "Submarine", SUBMARINE, MAX_SUBMARINE};
 
     t_embarcacao *embarcacoes[5] = {&battleship, &carier, &destroyer, &patrol_boat, &submarine};
-    system("MODE 115,45");
+    //system("MODE 115,45");
     while (true)
     {
 
@@ -36,11 +32,12 @@ int main()
         imprime_capa(); //imprime a tela inicial com o desenho do barco
 
         scanf("%i", &opicao); //opição do modo de jogo
-        system("MODE 100,45");
+        //system("MODE 115,45");
 
         switch (opicao)
         {
         case 1:
+        {
 
             jogo_salvo = false;
 
@@ -84,21 +81,10 @@ int main()
                 mensagem_vencedor(2);
 
             break;
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
         case 2:
+        {
 
             system("cls");
             fflush(stdin);
@@ -158,11 +144,44 @@ int main()
 
                 break;
             }
-
+        }
         case 3:
+        {
+            PLAYER player_ramdom;
+            
+            player_ramdom.pontos = calcular_pontos();
+            char *computer_map[N_LINHAS][N_COLUNAS];
+            int embarcacao, coord_x, coord_y;
+            char orientacao;
 
-            printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.  ");
-            system("pause");
+            inicializar_jogo(computer_map);
+            imprimir_tela_debug(computer_map);
+
+            do
+            {
+                //Obter input
+                embarcacao = setar_tipo_embarcacao_aleatoria(embarcacoes);
+                //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
+                orientacao = setar_direcao_embarcacao_aleatoria();
+                setar_coordenadas_de_entrada_aleatoria(&coord_x, &coord_y);
+              
+
+                //Alocar embarcacao
+                if (alocar_embarcacao_aleatorio(coord_x, coord_y, orientacao, computer_map, embarcacoes[embarcacao])){
+                    Atualizar_contagem_embarcacao_aleatoria(embarcacoes[embarcacao]);
+                }
+                    
+                // Reimprimir tela
+                //imprimir_selecao_embarcacao(player_ramdom, 1, embarcacoes);
+                imprimir_tela_debug(computer_map);
+                Sleep(TEMPO_DE_ATRASO);
+
+            } while (verificar_embarcacoes_disponiveis(embarcacoes));
+            imprimir_tela(computer_map, 1);
+            Sleep(TEMPO_DE_ATRASO);
+
+        }
+
             break;
 
         case 4:
