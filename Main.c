@@ -165,8 +165,8 @@ int main()
             player[1].pontos = calcular_pontos();
 
             gerar_mapa_aleatorio(player[1].armada, embarcacoes);
-            imprimir_tela(player[1].armada,1);
-            Sleep(TEMPO_DE_ATRASO + 100);
+            //imprimir_tela(player[1].armada,1);
+            //Sleep(TEMPO_DE_ATRASO + 100);
 
 
             imprimir_tela_de_instrucoes(&player[0], 0, embarcacoes);
