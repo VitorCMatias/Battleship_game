@@ -15,11 +15,11 @@
 #define SUBMARINE 3
 #define PATROL_BOAT 2
 
-#define MAX_CARRIER 0
-#define MAX_BATTLESHIP 1
-#define MAX_DESTROYER 0
-#define MAX_SUBMARINE 0
-#define MAX_PATROL_BOAT 0
+#define MAX_CARRIER 3
+#define MAX_BATTLESHIP 3
+#define MAX_DESTROYER 3
+#define MAX_SUBMARINE 3
+#define MAX_PATROL_BOAT 3
 
 
 #define TAM_NOME_PARTIDA 20
