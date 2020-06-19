@@ -32,14 +32,14 @@ int main()
 
         imprime_capa(); //imprime a tela inicial com o desenho do barco
 
-        scanf("%i", &opicao); //opição do modo de jogo
-        //system("MODE 115,45");
+        scanf("%i", &opicao); //opção do modo de jogo
 
         switch (opicao)
         {
         case 1:
         {
-
+            contagem_de_rodadas=0;
+            
             jogo_salvo = false;
 
             inicializar_player(&player[0]);
@@ -165,13 +165,14 @@ int main()
             player[1].pontos = calcular_pontos();
 
             gerar_mapa_aleatorio(player[1].armada, embarcacoes);
+            imprimir_tela(player[1].armada,1);
+            Sleep(TEMPO_DE_ATRASO + 100);
 
 
             imprimir_tela_de_instrucoes(&player[0], 0, embarcacoes);
             adicionar_embarcacao_p1(player[0], embarcacoes);
 
-            imprimir_tela(player[1].armada,1);
-            Sleep(TEMPO_DE_ATRASO + 100);
+            contagem_de_rodadas=0;
 
             while (player[1].pontos != 0 && player[0].pontos != 0 && jogo_salvo == false)
             {
@@ -196,6 +197,8 @@ int main()
                 getch();
                 player[0].pontos -= instrucao;
 
+                contagem_de_rodadas++;
+
             }
 
             if (instrucao == SALVAR_JOGO) break;
@@ -210,6 +213,72 @@ int main()
         }
 
         case 4:
+        {
+            jogo_salvo=false;
+            
+            system("cls");
+            fflush(stdin);
+            printf("Digite o nome da partida que deseja resgatar:");
+            scanf(" %s", nome_partida);
+
+            strcat(nome_partida, ".bin");
+
+            arq = fopen(nome_partida, "rb");
+
+            if (arq == NULL)
+            {
+                printf("PROBLEMAS AO ABRIR O ARQUIVO.\n");
+                getch();
+                break;
+            }
+            else
+            {
+
+                inicializar_player(&player[0]);
+                inicializar_player(&player[1]);
+
+                fread(&player, sizeof(PLAYER), 2, arq);
+                fread(&contagem_de_rodadas, sizeof(int), 1, arq);
+
+                while (player[1].pontos != 0 && player[0].pontos != 0 && jogo_salvo == false)
+                {
+
+                    imprimir_tela(player[0].ataque, 0);
+                    imprimir_pontuacao(player[0].pontos, player[1].pontos);
+                    instrucao = obter_instrucao(player[0].ataque, player[1].armada);
+
+                    if (instrucao == SALVAR_JOGO){
+                        system("cls");
+                        criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
+                        break;
+                    }
+
+                    player[1].pontos -= instrucao;
+
+                    instrucao = obter_instrucao_random(player[1].ataque, player[0].armada);
+                    imprimir_tela(player[1].ataque, 1);
+                    imprimir_pontuacao_maquina(player[1].pontos, player[0].pontos);
+
+                    while (!kbhit());
+                    getch();
+                    player[0].pontos -= instrucao;
+
+                    contagem_de_rodadas++;
+
+                }
+
+                if (instrucao == SALVAR_JOGO) break;
+                
+                if (player[0].pontos == 0)
+                    mensagem_vencedor(2); //imprime a tela de vitória
+                else
+                mensagem_vencedor(1);
+
+                break;
+            }
+        }
+
+        case 5:
 
             imprimir_creditos();
             break;

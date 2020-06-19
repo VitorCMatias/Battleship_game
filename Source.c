@@ -373,9 +373,10 @@ void imprime_capa()
     fclose(arq);
 
     printf("\n\n\n       1-PLAYER VS PLAYER.");
-    printf("\n       2-CONTINUAR UM JOGO.");
+    printf("\n       2-CONTINUAR UM JOGO PLAYER VS PLAYER.");
     printf("\n       3-JOGAR CONTRA A MAQUINA.");
-    printf("\n       4-DESENVOLVEDORES.");
+    printf("\n       4-CONTINUAR UM JOGO CONTRA A MAQUINA.");
+    printf("\n       5-DESENVOLVEDORES.");
     printf("\n\n\n       MODO DE JOGO:");
 }
 
