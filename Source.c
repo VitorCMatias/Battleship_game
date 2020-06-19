@@ -362,6 +362,7 @@ void imprime_capa()
 
     int i, LIN = 100;
     char linha[100];
+    int count = 0;
 
     arq = fopen("tela_batalha-naval.txt", "r");
 
@@ -370,7 +371,23 @@ void imprime_capa()
 
     while ((fgets(linha, LIN, arq)) != NULL)
     {
+        if (count < 14)
+        {
+            printf("\033[32m");
+        }
+
+        else if (count > 29)
+        {
+            printf("\033[44m");
+        }
+        else
+        {
+            printf("\033[90m");
+        }
+
         printf("%s", linha);
+        printf("\033[m");
+        count++;
     }
 
     fclose(arq);
