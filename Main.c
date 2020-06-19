@@ -68,7 +68,6 @@ int main()
                     system("cls");
                     criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
                     break;
-
                 }
 
                 player[seleciona_player + incremento].pontos -= instrucao; //retira um ponto do adversário caso acerte o barco
@@ -76,11 +75,12 @@ int main()
                 getch();
             }
 
-            if (instrucao == SALVAR_JOGO) break;
+            if (instrucao == SALVAR_JOGO)
+                break;
 
             if (player[0].pontos == 0)
                 mensagem_vencedor(2); //imprime a tela de vitória
-            else 
+            else
                 mensagem_vencedor(1);
 
             break;
@@ -151,17 +151,37 @@ int main()
         }
         case 3:
         {
+
             system("cls");
             puts("Carregando ...");
-            PLAYER player_ramdom;
 
-            player_ramdom.pontos = calcular_pontos();
+            PLAYER player_ramdom, jogador1;
             char *computer_map[N_LINHAS][N_COLUNAS];
-            gerar_mapa_aleatorio(computer_map, embarcacoes);
+            jogo_salvo = false;
+            jogador1.pontos = calcular_pontos();
+            player_ramdom.pontos = calcular_pontos();
+
+            inicializar_player(&jogador1);
+            gerar_mapa_aleatorio(player_ramdom.armada, embarcacoes);
+
+    
 
             //system("cls");
-            imprimir_tela(computer_map, 1);
-            Sleep(TEMPO_DE_ATRASO+100);
+            imprimir_tela(player_ramdom.armada, 1);
+            Sleep(TEMPO_DE_ATRASO + 1000);
+
+            imprimir_tela_de_instrucoes(&jogador1, 0, embarcacoes);
+            adicionar_embarcacao_p1(jogador1, embarcacoes);
+
+            printf("%d %d\n",player_ramdom.pontos,jogador1.pontos);
+            Sleep(1000);
+
+            while (/*player_ramdom.pontos != 0 && */jogador1.pontos != 0 && jogo_salvo == false)
+            {
+                imprimir_tela(jogador1.ataque, 0);
+                imprimir_pontuacao(jogador1.pontos, player_ramdom.pontos);
+                instrucao = obter_instrucao(jogador1.ataque, player_ramdom.armada);
+            }
         }
 
         break;

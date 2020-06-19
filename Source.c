@@ -787,3 +787,25 @@ void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao 
 
     } while (verificar_embarcacoes_disponiveis(embarcacoes));
 }
+
+
+void adicionar_embarcacao_p1(PLAYER player, t_embarcacao *embarcacoes[5])
+{
+    int embarcacao, coord_x, coord_y;
+    char orientacao;
+
+    do
+    {
+        embarcacao = setar_tipo_embarcacao();
+        orientacao = setar_direcao_embarcacao();
+        setar_coordenadas_de_entrada(&coord_x, &coord_y);
+
+        //Alocar embarcacao
+        if (alocar_embarcacao(coord_x, coord_y, orientacao, player.armada, embarcacoes[embarcacao], 0))
+            Atualizar_contagem_embarcacao(embarcacoes[embarcacao]);
+        // Reimprimir tela
+        imprimir_selecao_embarcacao(&player, 0, embarcacoes);
+        Sleep(TEMPO_DE_ATRASO);
+
+    } while (verificar_embarcacoes_disponiveis(embarcacoes));
+}

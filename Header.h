@@ -15,11 +15,11 @@
 #define SUBMARINE 3
 #define PATROL_BOAT 2
 
-#define MAX_CARRIER 1
+#define MAX_CARRIER 0
 #define MAX_BATTLESHIP 1
-#define MAX_DESTROYER 1
-#define MAX_SUBMARINE 1
-#define MAX_PATROL_BOAT 1
+#define MAX_DESTROYER 0
+#define MAX_SUBMARINE 0
+#define MAX_PATROL_BOAT 0
 
 
 #define TAM_NOME_PARTIDA 20
@@ -114,5 +114,5 @@ bool testar_posicao_embarcacao_vertical_aleatoria(int coord_linha, int coord_col
 bool testar_posicao_embarcacao_horizontal_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
 void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacoes[5]);
 
-
+void adicionar_embarcacao_p1(PLAYER player, t_embarcacao *embarcacoes[5]);
 void imprimir_tela_debug(char *player[N_LINHAS][N_COLUNAS]);
