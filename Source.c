@@ -784,10 +784,8 @@ void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao 
             Atualizar_contagem_embarcacao_aleatoria(embarcacoes[embarcacao]);
         }
 
-
     } while (verificar_embarcacoes_disponiveis(embarcacoes));
 }
-
 
 void adicionar_embarcacao_p1(PLAYER player, t_embarcacao *embarcacoes[5])
 {
@@ -808,4 +806,57 @@ void adicionar_embarcacao_p1(PLAYER player, t_embarcacao *embarcacoes[5])
         Sleep(TEMPO_DE_ATRASO);
 
     } while (verificar_embarcacoes_disponiveis(embarcacoes));
+}
+
+int obter_instrucao_random(char *ataque[N_LINHAS][N_COLUNAS], char *armada[N_LINHAS][N_COLUNAS])
+{
+
+    int coord_y, coord_x;
+    int acertou = 0;
+
+  
+    
+        coord_x = (numero_aleatorio() % N_COLUNAS) ;
+        coord_y = numero_aleatorio() % N_LINHAS;
+
+   
+
+    if (armada[coord_y][coord_x] != "--")
+    {
+        if (ataque[coord_y][coord_x] != armada[coord_y][coord_x])
+        {
+            ataque[coord_y][coord_x] = armada[coord_y][coord_x];
+            acertou = 1;
+        }
+    }
+
+    else
+    {
+        ataque[coord_y][coord_x] = "**";
+    }
+    return acertou;
+}
+
+int numero_aleatorio()
+{
+    time_t timer;
+
+    srand((unsigned)time(&timer));
+    int random = rand();
+    return random;
+}
+
+void imprimir_pontuacao_maquina(int atacante, int defensor)
+{
+
+    printf("\n\n                            ");
+    printf("---------------------------------------------------------");
+    printf("\n                           ");
+    printf("      POSICOES INIMIGAS RESTANTES: %i\n", defensor);
+    printf("                           ");
+    printf("      POSICOES AMIGAS SOBREVIVENTES: %i\n", atacante);
+    printf("\n                          ");
+    printf("       Aperte QUALQUER Tecla.");
+    printf("\n                            ");
+    printf("---------------------------------------------------------");
 }

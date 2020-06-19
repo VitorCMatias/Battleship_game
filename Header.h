@@ -114,5 +114,11 @@ bool testar_posicao_embarcacao_vertical_aleatoria(int coord_linha, int coord_col
 bool testar_posicao_embarcacao_horizontal_aleatoria(int coord_linha, int coord_coluna, char *mapa[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacao);
 void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacoes[5]);
 
+
+int numero_aleatorio();
+
+
 void adicionar_embarcacao_p1(PLAYER player, t_embarcacao *embarcacoes[5]);
 void imprimir_tela_debug(char *player[N_LINHAS][N_COLUNAS]);
+int obter_instrucao_random(char *ataque[N_LINHAS][N_COLUNAS], char *armada[N_LINHAS][N_COLUNAS]);
+void imprimir_pontuacao_maquina(int atacante, int defensor);
