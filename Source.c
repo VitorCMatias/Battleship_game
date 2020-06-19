@@ -771,7 +771,7 @@ void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao 
     int embarcacao, coord_x, coord_y;
     char orientacao;
 
-    inicializar_jogo(computer_map);
+    //inicializar_jogo(computer_map);
     do
     {
         embarcacao = setar_tipo_embarcacao_aleatoria(embarcacoes);

@@ -138,8 +138,7 @@ int main()
                     getch();
                 }
 
-                if (instrucao == SALVAR_JOGO)
-                    break;
+                if (instrucao == SALVAR_JOGO) break;
 
                 if (player[0].pontos == 0)
                     mensagem_vencedor(2); //imprime a tela de vitória
@@ -155,55 +154,60 @@ int main()
             system("cls");
             puts("Carregando ...");
 
-            PLAYER player_ramdom, jogador1;
-            char *computer_map[N_LINHAS][N_COLUNAS];
+            //PLAYER player_ramdom, jogador1,player[2];
+            //char *computer_map[N_LINHAS][N_COLUNAS];
             jogo_salvo = false;
-            jogador1.pontos = calcular_pontos();
-            player_ramdom.pontos = calcular_pontos();
 
-            inicializar_player(&jogador1);
-            inicializar_player(&player_ramdom);
-            gerar_mapa_aleatorio(player_ramdom.armada, embarcacoes);
+            inicializar_player(&player[0]);
+            inicializar_player(&player[1]);
 
-            //system("cls");
-            //imprimir_tela(player_ramdom.armada, 1);
-            //Sleep(TEMPO_DE_ATRASO + 1000);
+            player[0].pontos = calcular_pontos();
+            player[1].pontos = calcular_pontos();
 
-            imprimir_tela_de_instrucoes(&jogador1, 0, embarcacoes);
-            adicionar_embarcacao_p1(jogador1, embarcacoes);
+            gerar_mapa_aleatorio(player[1].armada, embarcacoes);
 
-            while (/*player_ramdom.pontos != 0 && jogador1.pontos != 0 &&*/ jogo_salvo == false)
+
+            imprimir_tela_de_instrucoes(&player[0], 0, embarcacoes);
+            adicionar_embarcacao_p1(player[0], embarcacoes);
+
+            imprimir_tela(player[1].armada,1);
+            Sleep(TEMPO_DE_ATRASO + 100);
+
+            while (player[1].pontos != 0 && player[0].pontos != 0 && jogo_salvo == false)
             {
 
-                imprimir_tela(jogador1.ataque, 0);
-                imprimir_pontuacao(jogador1.pontos, player_ramdom.pontos);
-                instrucao = obter_instrucao(jogador1.ataque, player_ramdom.armada);
-                jogador1.pontos -= instrucao;
+                imprimir_tela(player[0].ataque, 0);
+                imprimir_pontuacao(player[0].pontos, player[1].pontos);
+                instrucao = obter_instrucao(player[0].ataque, player[1].armada);
 
-                instrucao = obter_instrucao_random(player_ramdom.ataque, jogador1.armada);
-                imprimir_tela(player_ramdom.ataque, 1);
-                imprimir_pontuacao_maquina(player_ramdom.pontos, jogador1.pontos);
+                if (instrucao == SALVAR_JOGO){
+                    system("cls");
+                    criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
+                    break;
+                }
+
+                player[1].pontos -= instrucao;
+
+                instrucao = obter_instrucao_random(player[1].ataque, player[0].armada);
+                imprimir_tela(player[1].ataque, 1);
+                imprimir_pontuacao_maquina(player[1].pontos, player[0].pontos);
 
                 while (!kbhit());
                 getch();
-                player_ramdom.pontos -= instrucao;
+                player[0].pontos -= instrucao;
 
-                if (instrucao == SALVAR_JOGO)
-                {
-                    system("cls");
-                    criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
-                    jogo_salvo = true;
-                }
             }
-            if (instrucao == SALVAR_JOGO)
-                break;
-            /*if (player_ramdom.pontos == 0)
-                mensagem_vencedor(1); //imprime a tela de vitória
-            else
-                mensagem_vencedor(2);*/
-        }
 
-        break;
+            if (instrucao == SALVAR_JOGO) break;
+            
+            if (player[0].pontos == 0)
+                mensagem_vencedor(2); //imprime a tela de vitória
+            else
+            mensagem_vencedor(1);
+
+            break;
+
+        }
 
         case 4:
 
