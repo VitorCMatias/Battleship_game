@@ -15,11 +15,11 @@
 #define SUBMARINE 3
 #define PATROL_BOAT 2
 
-#define MAX_CARRIER 3
-#define MAX_BATTLESHIP 3
-#define MAX_DESTROYER 3
-#define MAX_SUBMARINE 3
-#define MAX_PATROL_BOAT 3
+#define MAX_CARRIER 0
+#define MAX_BATTLESHIP 1
+#define MAX_DESTROYER 0
+#define MAX_SUBMARINE 0
+#define MAX_PATROL_BOAT 0
 
 
 #define TAM_NOME_PARTIDA 20
@@ -85,7 +85,7 @@ void mensagem_vencedor(int player);
 void salvar_jogo(char nome_partida[TAM_NOME_PARTIDA],char *ataque[N_LINHAS][N_COLUNAS],char *armada[N_LINHAS][N_COLUNAS],int pontos);
 void ler_partida(char nome_partida[TAM_NOME_PARTIDA], PLAYER *player1, PLAYER *player2);
 
-void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player, int rodadas);
+void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER player[2], int rodadas);
 void le_jogo(char nome_arquivo[TAM_NOME_PARTIDA],PLAYER *player1,PLAYER *player2);
 void inicializar_player(PLAYER *player);
 

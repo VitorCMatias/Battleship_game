@@ -184,18 +184,12 @@ int main()
             } while (verificar_embarcacoes_disponiveis(embarcacoes));
             //system("cls");
             imprimir_tela(computer_map, 1);
-            Sleep(TEMPO_DE_ATRASO+10000000);
+            Sleep(TEMPO_DE_ATRASO+100);
         }
 
         break;
 
         case 4:
-
-            printf("\n\n                FUNCAO AINDA NAO IMPLEMENTADA.  ");
-            system("pause");
-            break;
-
-        case 5:
 
             imprimir_creditos();
             break;

@@ -374,8 +374,7 @@ void imprime_capa()
     printf("\n\n\n       1-PLAYER VS PLAYER.");
     printf("\n       2-CONTINUAR UM JOGO.");
     printf("\n       3-JOGAR CONTRA A MAQUINA.");
-    printf("\n       4-DICAS SOBRE O JOGO.");
-    printf("\n       5-DESENVOLVEDORES.");
+    printf("\n       4-DESENVOLVEDORES.");
     printf("\n\n\n       MODO DE JOGO:");
 }
 
@@ -450,7 +449,7 @@ void mensagem_vencedor(int player)
     getch();
 }
 
-void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER player, int rodadas)
+void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER player[2], int rodadas)
 {
 
     FILE *arq;
@@ -464,8 +463,9 @@ void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER player, int rodadas)
     else
     {
 
-        fwrite(&player, sizeof(PLAYER), 1, arq);
-        //fwrite(&rodadas,sizeof(int),1,arq);
+        fwrite(&player[0], sizeof(PLAYER), 1, arq);
+        fwrite(&player[1], sizeof(PLAYER), 1, arq);
+        fwrite(&rodadas,sizeof(int),1,arq);
     }
 
     fclose(arq);
@@ -535,8 +535,7 @@ void criar_arquivo(bool *jogo_salvo, PLAYER player[2], int contagem_de_rodadas)
 
     if (escolha == 'Y')
     {
-        salva_jogo(nome_partida, player[0], contagem_de_rodadas);
-        salva_jogo(nome_partida, player[1], contagem_de_rodadas);
+        salva_jogo(nome_partida, player, contagem_de_rodadas);
     }
 
     *jogo_salvo = true;
