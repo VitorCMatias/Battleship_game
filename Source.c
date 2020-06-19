@@ -36,6 +36,7 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
     hr = localtime(&segundos);
 
     printf("\n                                                BATALHA NAVAL                                  %2i:%2i \n", hr->tm_hour, hr->tm_min);
+    contador == 0 ? printf("\033[36m") : printf("\033[31m");
     printf("\n                                                  PLAYER%i\n\n", contador + 1);
     printf("                 ");
 
@@ -56,6 +57,8 @@ void imprimir_tela(char *player[N_LINHAS][N_COLUNAS], int contador)
         }
         printf("\n");
     }
+
+    printf("\033[m");
 }
 
 void imprimir_instrucoes(t_embarcacao *embarcacoes[5])
@@ -815,12 +818,8 @@ int obter_instrucao_random(char *ataque[N_LINHAS][N_COLUNAS], char *armada[N_LIN
     int coord_y, coord_x;
     int acertou = 0;
 
-  
-    
-        coord_x = (numero_aleatorio() % N_COLUNAS) ;
-        coord_y = numero_aleatorio() % N_LINHAS;
-
-   
+    coord_x = (numero_aleatorio() % N_COLUNAS);
+    coord_y = numero_aleatorio() % N_LINHAS;
 
     if (armada[coord_y][coord_x] != "--")
     {
