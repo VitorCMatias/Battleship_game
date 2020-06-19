@@ -23,7 +23,8 @@ int main()
     t_embarcacao submarine = {'S', "Submarine", SUBMARINE, MAX_SUBMARINE};
 
     t_embarcacao *embarcacoes[5] = {&battleship, &carier, &destroyer, &patrol_boat, &submarine};
-    //system("MODE 115,45");
+    system("MODE 115,45");
+
     while (true)
     {
 
@@ -41,13 +42,14 @@ int main()
 
             jogo_salvo = false;
 
+            inicializar_player(&player[0]);
+            inicializar_player(&player[1]);
+
             for (i = 0; i < 2; i++)
             {
                 imprimir_tela_de_instrucoes(player, i, embarcacoes);
                 adicionar_embarcacao(player, i, embarcacoes);
             }
-
-            inicializar_jogadores(player[0].ataque, player[1].ataque);
 
             //inicializa os pontos dos players.
             player[0].pontos = calcular_pontos();
@@ -65,6 +67,8 @@ int main()
                 {
                     system("cls");
                     criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
+                    break;
+
                 }
 
                 player[seleciona_player + incremento].pontos -= instrucao; //retira um ponto do adversário caso acerte o barco
@@ -72,13 +76,12 @@ int main()
                 getch();
             }
 
-            if (instrucao == SALVAR_JOGO)
-                break;
+            if (instrucao == SALVAR_JOGO) break;
 
             if (player[0].pontos == 0)
-                mensagem_vencedor(1); //imprime a tela de vitória
-            else
-                mensagem_vencedor(2);
+                mensagem_vencedor(2); //imprime a tela de vitória
+            else 
+                mensagem_vencedor(1);
 
             break;
         }
@@ -127,6 +130,7 @@ int main()
                     {
                         system("cls");
                         criar_arquivo(&jogo_salvo, player, contagem_de_rodadas);
+                        break;
                     }
 
                     player[seleciona_player + incremento].pontos -= instrucao; //retira um ponto do adversário caso acerte o barco
@@ -138,9 +142,9 @@ int main()
                     break;
 
                 if (player[0].pontos == 0)
-                    mensagem_vencedor(1); //imprime a tela de vitória
+                    mensagem_vencedor(2); //imprime a tela de vitória
                 else
-                    mensagem_vencedor(2);
+                    mensagem_vencedor(1);
 
                 break;
             }

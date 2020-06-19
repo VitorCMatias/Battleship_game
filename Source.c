@@ -90,8 +90,11 @@ int setar_tipo_embarcacao()
         printf("\n                         ");
         printf("Tipo de embarcacao: ");
         scanf("%d", &tipo_embarcacao);
-        if (tipo_embarcacao < 1 || tipo_embarcacao > 5)
+
+        if (tipo_embarcacao < 1 || tipo_embarcacao > 5){
             printf("O valorinformado, %d, nao representa nenhuma embarcacao! \n", tipo_embarcacao);
+            tipo_embarcacao=0;
+        }
     } while (tipo_embarcacao < 1 || tipo_embarcacao > 5);
 
     return tipo_embarcacao - 1;
@@ -574,7 +577,7 @@ void imprimir_tela_de_instrucoes(PLAYER player[2], int i, t_embarcacao *embarcac
 {
     system("cls");
     imprimir_selecao_embarcacao(player, i, embarcacoes);
-    imprimir_instrucoes(embarcacoes);
+    //imprimir_instrucoes(embarcacoes);
 }
 
 void adicionar_embarcacao(PLAYER player[2], int i, t_embarcacao *embarcacoes[5])
