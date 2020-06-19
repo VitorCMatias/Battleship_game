@@ -91,9 +91,10 @@ int setar_tipo_embarcacao()
         printf("Tipo de embarcacao: ");
         scanf("%d", &tipo_embarcacao);
 
-        if (tipo_embarcacao < 1 || tipo_embarcacao > 5){
+        if (tipo_embarcacao < 1 || tipo_embarcacao > 5)
+        {
             printf("O valorinformado, %d, nao representa nenhuma embarcacao! \n", tipo_embarcacao);
-            tipo_embarcacao=0;
+            tipo_embarcacao = 0;
         }
     } while (tipo_embarcacao < 1 || tipo_embarcacao > 5);
 
@@ -465,7 +466,7 @@ void salva_jogo(char nome_arquivo[TAM_NOME_PARTIDA], PLAYER player[2], int rodad
 
         fwrite(&player[0], sizeof(PLAYER), 1, arq);
         fwrite(&player[1], sizeof(PLAYER), 1, arq);
-        fwrite(&rodadas,sizeof(int),1,arq);
+        fwrite(&rodadas, sizeof(int), 1, arq);
     }
 
     fclose(arq);
@@ -763,4 +764,26 @@ void imprimir_tela_debug(char *player[N_LINHAS][N_COLUNAS])
         }
         printf("\n");
     }
+}
+
+void gerar_mapa_aleatorio(char *computer_map[N_LINHAS][N_COLUNAS], t_embarcacao *embarcacoes[5])
+{
+    int embarcacao, coord_x, coord_y;
+    char orientacao;
+
+    inicializar_jogo(computer_map);
+    do
+    {
+        embarcacao = setar_tipo_embarcacao_aleatoria(embarcacoes);
+
+        orientacao = setar_direcao_embarcacao_aleatoria();
+        setar_coordenadas_de_entrada_aleatoria(&coord_x, &coord_y);
+
+        if (alocar_embarcacao_aleatorio(coord_x, coord_y, orientacao, computer_map, embarcacoes[embarcacao]))
+        {
+            Atualizar_contagem_embarcacao_aleatoria(embarcacoes[embarcacao]);
+        }
+
+
+    } while (verificar_embarcacoes_disponiveis(embarcacoes));
 }

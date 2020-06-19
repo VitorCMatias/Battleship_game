@@ -157,31 +157,8 @@ int main()
 
             player_ramdom.pontos = calcular_pontos();
             char *computer_map[N_LINHAS][N_COLUNAS];
-            int embarcacao, coord_x, coord_y;
-            char orientacao;
+            gerar_mapa_aleatorio(computer_map, embarcacoes);
 
-            inicializar_jogo(computer_map);
-            imprimir_tela_debug(computer_map);
-
-            do
-            {
-                //Obter input
-                embarcacao = setar_tipo_embarcacao_aleatoria(embarcacoes);
-                //fazer um f para verificar dsponibilidade de embarcacao, se quant > 0
-                orientacao = setar_direcao_embarcacao_aleatoria();
-                setar_coordenadas_de_entrada_aleatoria(&coord_x, &coord_y);
-
-                //Alocar embarcacao
-                if (alocar_embarcacao_aleatorio(coord_x, coord_y, orientacao, computer_map, embarcacoes[embarcacao]))
-                {
-                    Atualizar_contagem_embarcacao_aleatoria(embarcacoes[embarcacao]);
-                }
-
-                //imprimir_selecao_embarcacao(player_ramdom, 1, embarcacoes);
-                imprimir_tela_debug(computer_map);
-                //Sleep(TEMPO_DE_ATRASO);
-
-            } while (verificar_embarcacoes_disponiveis(embarcacoes));
             //system("cls");
             imprimir_tela(computer_map, 1);
             Sleep(TEMPO_DE_ATRASO+100);
